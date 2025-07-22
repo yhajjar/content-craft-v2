@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { v4 as uuidv4 } from 'uuid';
+import courseSchemaData from '../../course-schema.json';
 import { marked } from 'marked';
 import { Plus, BookOpen, FileText, Video, Library, Eye, Save, Moon, Sun } from 'lucide-react';
 import { Button } from './ui/button';
@@ -375,19 +376,52 @@ const CourseContentBuilder: React.FC = () => {
   const { toast } = useToast();
   const [isPreviewMode, setIsPreviewMode] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [courseData, setCourseData] = useState<CourseData>({
-    courseId: uuidv4(),
-    title: 'New Course',
-    overview: {
-      title: 'Course Overview',
-      content: '<p>Welcome to this course! This is where you can introduce your students to what they will learn.</p>',
-      objectives: ['Define course learning objectives', 'Understand the course structure'],
-      prerequisites: 'No prior knowledge required',
-      duration: '8 weeks',
-      difficulty: 'Beginner',
-      isEditing: false
-    },
-    sections: []
+  const [courseData, setCourseData] = useState<CourseData>(() => {
+    const transformedSections = courseSchemaData.sections.map((section): Section => {
+      const modules = section.modules.map((mod): Module => ({
+        id: mod.moduleId,
+        title: mod.moduleTitle,
+        content: mod.content.map(c => c.data).join('<hr />'),
+        template: 'custom',
+        isEditing: false,
+      }));
+
+      // The logic in the app seems to be that a section is either single or multi module.
+      // Let's infer from the number of modules in the schema.
+      if (modules.length === 1) {
+        return {
+          id: section.sectionId,
+          title: section.sectionTitle,
+          type: 'single-module',
+          isEditing: false,
+          module: modules[0],
+        };
+      } else {
+        return {
+          id: section.sectionId,
+          title: section.sectionTitle,
+          type: 'multi-module',
+          isEditing: false,
+          isExpanded: true,
+          modules: modules,
+        };
+      }
+    });
+
+    return {
+      courseId: uuidv4(),
+      title: courseSchemaData.courseTitle,
+      overview: {
+        title: courseSchemaData.courseTitle,
+        content: courseSchemaData.courseDescription,
+        objectives: ['Define course learning objectives', 'Understand the course structure'],
+        prerequisites: 'No prior knowledge required',
+        duration: '8 weeks',
+        difficulty: 'Beginner',
+        isEditing: false
+      },
+      sections: transformedSections
+    };
   });
 
   // Dark mode toggle
@@ -539,13 +573,64 @@ const CourseContentBuilder: React.FC = () => {
     }));
   }, []);
 
-  const saveCourse = useCallback(() => {
-    // In a real app, this would save to a backend
-    localStorage.setItem('course_' + courseData.courseId, JSON.stringify(courseData));
-    toast({
-      title: "Course Saved",
-      description: "Your course content has been saved successfully."
-    });
+  const saveCourse = useCallback(async () => {
+    const n8nWebhookUrl = '/webhook/course-builder';
+
+    // 1. Send data to n8n webhook
+    try {
+      const response = await fetch(n8nWebhookUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(courseData),
+      });
+
+      if (response.ok) {
+        toast({
+          title: "Webhook Sent",
+          description: "Course data successfully sent to n8n.",
+        });
+      } else {
+        const errorData = await response.text();
+        toast({
+          title: "Webhook Error",
+          description: `Failed to send data: ${response.status} ${response.statusText}. ${errorData}`,
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Network Error",
+        description: `Could not connect to the webhook: ${error}`,
+        variant: "destructive",
+      });
+    }
+
+    // 2. Trigger JSON file download
+    try {
+      const jsonString = JSON.stringify(courseData, null, 2);
+      const blob = new Blob([jsonString], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'course-data.json';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      toast({
+        title: "Course Saved",
+        description: "Your course content has been downloaded.",
+      });
+    } catch (error) {
+      toast({
+        title: "Download Error",
+        description: `Could not prepare file for download: ${error}`,
+        variant: "destructive",
+      });
+    }
   }, [courseData, toast]);
 
   return (

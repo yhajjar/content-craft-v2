@@ -1,0 +1,59 @@
+{
+  "courseTitle": "Example Course Title",
+  "courseDescription": "A brief description of the course.",
+  "sections": [
+    {
+      "sectionId": "sec_1",
+      "sectionTitle": "Introduction to the Course",
+      "modules": [
+        {
+          "moduleId": "mod_1_1",
+          "moduleTitle": "Welcome and Overview",
+          "moduleType": "single",
+          "content": [
+            {
+              "contentType": "text",
+              "data": "<h1>Welcome!</h1><p>This is the first module.</p>"
+            },
+            {
+              "contentType": "video",
+              "data": "https://www.youtube.com/watch?v=example"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sectionId": "sec_2",
+      "sectionTitle": "Core Concepts",
+      "modules": [
+        {
+          "moduleId": "mod_2_1",
+          "moduleTitle": "Understanding the Basics",
+          "moduleType": "single",
+          "content": [
+            {
+              "contentType": "text",
+              "data": "<p>Let's dive into the core concepts.</p>"
+            }
+          ]
+        },
+        {
+          "moduleId": "mod_2_2",
+          "moduleTitle": "Advanced Topics",
+          "moduleType": "multi",
+          "content": [
+            {
+              "contentType": "text",
+              "data": "<h3>Sub-topic 1</h3><p>Details about sub-topic 1.</p>"
+            },
+            {
+              "contentType": "text",
+              "data": "<h3>Sub-topic 2</h3><p>Details about sub-topic 2.</p>"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
