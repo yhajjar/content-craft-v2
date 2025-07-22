@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Dark Blue Professional Theme */
+    --background: 0 0% 98%;
+    --foreground: 224 71% 4%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 224 71% 4%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 224 71% 4%;
+
+    --primary: 221 83% 53%;
+    --primary-foreground: 0 0% 98%;
+    --primary-muted: 221 83% 53% / 0.1;
+
+    --secondary: 215 20% 65%;
+    --secondary-foreground: 224 71% 4%;
+
+    --muted: 215 27% 95%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 198 93% 60%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 215 27% 91%;
+    --input: 215 27% 91%;
+    --ring: 221 83% 53%;
+
+    --radius: 0.75rem;
+
+    /* Course builder specific colors */
+    --editor-background: 0 0% 100%;
+    --sidebar-background: 215 27% 96%;
+    --content-block: 0 0% 100%;
+    --section-header: 221 83% 53% / 0.05;
+    
+    /* Rich gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(221 83% 53%), hsl(221 83% 63%));
+    --gradient-secondary: linear-gradient(135deg, hsl(215 27% 95%), hsl(215 27% 98%));
+    --gradient-hero: linear-gradient(135deg, hsl(221 83% 53%), hsl(198 93% 60%));
+    
+    /* Professional shadows */
+    --shadow-soft: 0 2px 8px hsl(221 83% 53% / 0.08);
+    --shadow-medium: 0 4px 16px hsl(221 83% 53% / 0.12);
+    --shadow-content: 0 1px 3px hsl(221 83% 53% / 0.06);
+  }
+
+  .dark {
+    /* Dark mode with deep blue theme */
+    --background: 224 71% 4%;
+    --foreground: 213 31% 91%;
+
+    --card: 224 71% 4%;
+    --card-foreground: 213 31% 91%;
+
+    --popover: 224 71% 4%;
+    --popover-foreground: 213 31% 91%;
+
+    --primary: 217 91% 60%;
+    --primary-foreground: 224 71% 4%;
+    --primary-muted: 217 91% 60% / 0.15;
+
+    --secondary: 215 25% 27%;
+    --secondary-foreground: 213 31% 91%;
+
+    --muted: 215 25% 18%;
+    --muted-foreground: 217 10% 64%;
+
+    --accent: 198 93% 60%;
+    --accent-foreground: 224 71% 4%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 213 31% 91%;
+
+    --border: 215 25% 18%;
+    --input: 215 25% 18%;
+    --ring: 217 91% 60%;
+
+    /* Dark mode specific colors */
+    --editor-background: 215 25% 16%;
+    --sidebar-background: 224 71% 4%;
+    --content-block: 215 25% 16%;
+    --section-header: 217 91% 60% / 0.1;
+
+    /* Dark mode gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(217 91% 60%), hsl(198 93% 60%));
+    --gradient-secondary: linear-gradient(135deg, hsl(215 25% 18%), hsl(215 25% 25%));
+    --gradient-hero: linear-gradient(135deg, hsl(224 71% 4%), hsl(215 25% 18%));
+
+    /* Dark mode shadows */
+    --shadow-soft: 0 2px 8px hsl(0 0% 0% / 0.3);
+    --shadow-medium: 0 4px 16px hsl(0 0% 0% / 0.4);
+    --shadow-content: 0 1px 3px hsl(0 0% 0% / 0.2);
+  }
+}
+
+@layer components {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer base {
+  :root {
+    /* Place all your CSS variables here */
+  }
+  .dark {
+    /* Place all your dark mode variables here */
+  }
+}
