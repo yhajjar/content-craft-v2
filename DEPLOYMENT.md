@@ -43,8 +43,7 @@ git push origin main
 If you encounter the "port is already allocated" error:
 
 1. Make sure your `docker-compose.yml` file does not include any port mappings
-2. Ensure the `networks` section is configured correctly to use `coolify-network`
-3. Redeploy the application
+2. Redeploy the application
 
 ## Important Notes
 

@@ -7,9 +7,3 @@ services:
       dockerfile: Dockerfile
     # No ports section - let Coolify handle this
     restart: unless-stopped
-    networks:
-      - coolify-network
-
-networks:
-  coolify-network:
-    external: true
