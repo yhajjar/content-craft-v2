@@ -33,12 +33,11 @@ export const ContentSidebar: React.FC<ContentSidebarProps> = ({ onAddSection, on
   };
 
   return (
-    <aside className="w-80 bg-muted border-r border-border flex flex-col sticky top-0 h-screen">
+    <>
       <div className="p-6 border-b border-border">
         <h2 className="text-lg font-semibold text-foreground mb-2">Content Builder</h2>
         <p className="text-sm text-muted-foreground">Add sections and modules to structure your course</p>
       </div>
-
       <div className="flex-1 p-6 space-y-6 overflow-y-auto">
         <div>
           <Button onClick={() => onAddSection('multi-module')} className="w-full">
@@ -46,8 +45,6 @@ export const ContentSidebar: React.FC<ContentSidebarProps> = ({ onAddSection, on
             Add New Section
           </Button>
         </div>
-
-        {/* Content Templates */}
         <div>
           <h3 className="text-sm font-medium text-foreground mb-3 flex items-center">
             <Plus className="h-4 w-4 mr-2" />
@@ -78,8 +75,7 @@ export const ContentSidebar: React.FC<ContentSidebarProps> = ({ onAddSection, on
             })}
           </div>
         </div>
-
       </div>
-    </aside>
+    </>
   );
 };

@@ -3,7 +3,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { v4 as uuidv4 } from 'uuid';
 import courseSchemaData from '../../course-schema.json';
 import { marked } from 'marked';
-import { Plus, BookOpen, FileText, Video, Library, Eye, Save, Moon, Sun } from 'lucide-react';
+import { Plus, BookOpen, FileText, Video, Library, Eye, Save, Moon, Sun, PanelLeftOpen } from 'lucide-react';
 import { Button } from './ui/button';
 import { Card } from './ui/card';
 import { useToast } from '@/hooks/use-toast';
@@ -11,6 +11,7 @@ import { CourseOverview } from './CourseOverview';
 import { SingleModuleBlock } from './SingleModuleBlock';
 import { MultiModuleSection } from './MultiModuleSection';
 import { ContentSidebar } from './ContentSidebar';
+import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
 
 const contentModuleTemplates = {
   'course-overview': {
@@ -381,6 +382,7 @@ const CourseContentBuilder: React.FC<CourseContentBuilderProps> = ({ rowId }) =>
   const [isPreviewMode, setIsPreviewMode] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [courseData, setCourseData] = useState<CourseData | null>(null);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   useEffect(() => {
     const initializeCourseData = () => {
@@ -642,36 +644,69 @@ const CourseContentBuilder: React.FC<CourseContentBuilderProps> = ({ rowId }) =>
     );
   }
 
+  const handleAddModule = (template: string) => {
+    onAddModule(template);
+    setIsSheetOpen(false);
+  };
+
   return (
     <div className="min-h-screen bg-background flex">
-      {/* Sidebar */}
-      <ContentSidebar 
-        onAddSection={addSection}
-        onAddModule={onAddModule}
-        templates={contentModuleTemplates}
-      />
+      {/* Desktop Sidebar */}
+      <aside className="w-80 bg-muted border-r border-border flex-col sticky top-0 h-screen hidden md:flex">
+        <ContentSidebar
+          onAddSection={addSection}
+          onAddModule={handleAddModule}
+          templates={contentModuleTemplates}
+        />
+      </aside>
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col">
         {/* Header */}
-        <header className="bg-gradient-hero border-b border-border px-6 py-4 shadow-medium">
+        <header className="bg-gradient-hero border-b border-border px-4 md:px-6 py-3 shadow-medium">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <BookOpen className="h-6 w-6 text-primary-foreground" />
-              <div>
-                <h1 className="text-xl font-semibold text-primary-foreground">Course Content Builder</h1>
-                <p className="text-sm text-primary-foreground/80">Create and organize your educational content</p>
+            {/* Left Side */}
+            <div className="flex items-center">
+              <div className="md:hidden">
+                <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+                  <SheetTrigger asChild>
+                    <Button variant="outline" size="icon" className="bg-transparent text-white hover:bg-white/10 border-white/20">
+                      <PanelLeftOpen className="h-5 w-5" />
+                    </Button>
+                  </SheetTrigger>
+                  <SheetContent side="left" className="w-80 p-0 flex flex-col bg-muted">
+                    <ContentSidebar
+                      onAddSection={addSection}
+                      onAddModule={handleAddModule}
+                      templates={contentModuleTemplates}
+                    />
+                  </SheetContent>
+                </Sheet>
+              </div>
+              <div className="hidden md:flex items-center space-x-4">
+                <BookOpen className="h-6 w-6 text-white" />
+                <div>
+                  <h1 className="text-xl font-semibold text-white">Course Content Builder</h1>
+                  <p className="text-sm text-white/80">Create and organize your educational content</p>
+                </div>
               </div>
             </div>
-            <div className="flex items-center space-x-3">
+
+            {/* Center Logo */}
+            <div className="flex-grow flex justify-center">
+                <img src="/logo.png" alt="Logo" className="h-10 hidden md:block" />
+            </div>
+
+            {/* Right Side */}
+            <div className="flex items-center space-x-2">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={toggleDarkMode}
                 className="text-white hover:bg-white/10 gap-2"
               >
+                <span className="hidden md:inline">{isDarkMode ? 'Light' : 'Dark'}</span>
                 {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-                {isDarkMode ? 'Light' : 'Dark'}
               </Button>
               <Button 
                 onClick={saveCourse} 
@@ -679,15 +714,15 @@ const CourseContentBuilder: React.FC<CourseContentBuilderProps> = ({ rowId }) =>
                 variant="secondary"
                 className="gap-2 bg-white/10 text-white hover:bg-white/20 border-white/20"
               >
+                <span className="hidden md:inline">Save Course</span>
                 <Save className="h-4 w-4" />
-                Save Course
               </Button>
             </div>
           </div>
         </header>
 
         {/* Content */}
-        <main className="flex-1 p-6 overflow-y-auto">
+        <main className="flex-1 p-4 md:p-6 overflow-y-auto">
           <div className="max-w-4xl mx-auto space-y-6">
             {/* Course Overview */}
             <CourseOverview
