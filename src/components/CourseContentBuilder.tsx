@@ -511,8 +511,11 @@ const CourseContentBuilder: React.FC<CourseContentBuilderProps> = ({ rowId }) =>
 
   const addSection = useCallback((type: 'single-module' | 'multi-module', template?: string) => {
     if (!courseData) return;
+
+    const newSectionId = `sec_${courseData.sections.length + 1}`;
+
     const newSection: Section = {
-      id: uuidv4(),
+      id: newSectionId,
       title: type === 'single-module' ? 'New Policy' : 'New Section',
       type,
       isEditing: true,
@@ -520,7 +523,7 @@ const CourseContentBuilder: React.FC<CourseContentBuilderProps> = ({ rowId }) =>
       ...(type === 'single-module' 
         ? {
             module: {
-              id: uuidv4(),
+              id: `mod_${newSectionId}_1`,
               title: contentModuleTemplates[template as keyof typeof contentModuleTemplates]?.title || 'New Content',
               content: marked(contentModuleTemplates[template as keyof typeof contentModuleTemplates]?.content) as string || '<p>Add your content here...</p>',
               template: template || 'course-overview',
@@ -567,8 +570,14 @@ const CourseContentBuilder: React.FC<CourseContentBuilderProps> = ({ rowId }) =>
 
   const addModuleToSection = useCallback((sectionId: string, template: string) => {
     if (!courseData) return;
+
+    const section = courseData.sections.find(sec => sec.id === sectionId);
+    if (!section) return;
+
+    const newModuleId = `mod_${sectionId}_${(section.modules?.length || 0) + 1}`;
+
     const newModule: Module = {
-      id: uuidv4(),
+      id: newModuleId,
       title: contentModuleTemplates[template as keyof typeof contentModuleTemplates]?.title || 'New Module',
       content: marked(contentModuleTemplates[template as keyof typeof contentModuleTemplates]?.content) as string || '<p>Add your content here...</p>',
       template,
