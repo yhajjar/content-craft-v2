@@ -372,57 +372,84 @@ export interface CourseData {
   sections: Section[];
 }
 
-const CourseContentBuilder: React.FC = () => {
+interface CourseContentBuilderProps {
+  rowId?: string;
+}
+
+const CourseContentBuilder: React.FC<CourseContentBuilderProps> = ({ rowId }) => {
   const { toast } = useToast();
   const [isPreviewMode, setIsPreviewMode] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [courseData, setCourseData] = useState<CourseData>(() => {
-    const transformedSections = courseSchemaData.sections.map((section): Section => {
-      const modules = section.modules.map((mod): Module => ({
-        id: mod.moduleId,
-        title: mod.moduleTitle,
-        content: mod.content.map(c => c.data).join('<hr />'),
-        template: 'custom',
-        isEditing: false,
-      }));
+  const [courseData, setCourseData] = useState<CourseData | null>(null);
 
-      // The logic in the app seems to be that a section is either single or multi module.
-      // Let's infer from the number of modules in the schema.
-      if (modules.length === 1) {
-        return {
-          id: section.sectionId,
-          title: section.sectionTitle,
-          type: 'single-module',
-          isEditing: false,
-          module: modules[0],
-        };
+  useEffect(() => {
+    const initializeCourseData = () => {
+      if (rowId) {
+        // Start with a default structure associated with the rowId
+        setCourseData({
+          courseId: rowId,
+          title: 'New Course',
+          overview: {
+            title: 'Course Overview',
+            content: '<p>Welcome to this new course!</p>',
+            objectives: [],
+            prerequisites: '',
+            duration: '',
+            difficulty: 'Beginner',
+            isEditing: false,
+          },
+          sections: [],
+        });
       } else {
-        return {
-          id: section.sectionId,
-          title: section.sectionTitle,
-          type: 'multi-module',
-          isEditing: false,
-          isExpanded: true,
-          modules: modules,
-        };
-      }
-    });
+        // Fallback to default schema if no rowId is provided
+        const transformedSections = courseSchemaData.sections.map((section): Section => {
+          const modules = section.modules.map((mod): Module => ({
+            id: mod.moduleId,
+            title: mod.moduleTitle,
+            content: mod.content.map(c => c.data).join('<hr />'),
+            template: 'custom',
+            isEditing: false,
+          }));
 
-    return {
-      courseId: uuidv4(),
-      title: courseSchemaData.courseTitle,
-      overview: {
-        title: courseSchemaData.courseTitle,
-        content: courseSchemaData.courseDescription,
-        objectives: ['Define course learning objectives', 'Understand the course structure'],
-        prerequisites: 'No prior knowledge required',
-        duration: '8 weeks',
-        difficulty: 'Beginner',
-        isEditing: false
-      },
-      sections: transformedSections
+          if (modules.length === 1) {
+            return {
+              id: section.sectionId,
+              title: section.sectionTitle,
+              type: 'single-module',
+              isEditing: false,
+              module: modules[0],
+            };
+          } else {
+            return {
+              id: section.sectionId,
+              title: section.sectionTitle,
+              type: 'multi-module',
+              isEditing: false,
+              isExpanded: true,
+              modules: modules,
+            };
+          }
+        });
+
+        setCourseData({
+          courseId: uuidv4(),
+          title: courseSchemaData.courseTitle,
+          overview: {
+            title: courseSchemaData.courseTitle,
+            content: courseSchemaData.courseDescription,
+            objectives: ['Define course learning objectives', 'Understand the course structure'],
+            prerequisites: 'No prior knowledge required',
+            duration: '8 weeks',
+            difficulty: 'Beginner',
+            isEditing: false
+          },
+          sections: transformedSections
+        });
+      }
     };
-  });
+
+    initializeCourseData();
+  }, [rowId, toast]);
 
   // Dark mode toggle
   useEffect(() => {
@@ -439,7 +466,7 @@ const CourseContentBuilder: React.FC = () => {
   };
 
   const handleDragEnd = useCallback((result: any) => {
-    if (!result.destination) return;
+    if (!result.destination || !courseData) return;
 
     const { source, destination, type } = result;
 
@@ -457,7 +484,7 @@ const CourseContentBuilder: React.FC = () => {
         const newSections = courseData.sections.map(section =>
           section.id === source.droppableId ? { ...section, modules: sourceModules } : section
         );
-        setCourseData(prev => ({ ...prev, sections: newSections }));
+        setCourseData(prev => prev ? ({ ...prev, sections: newSections }) : null);
       } else {
         const destModules = Array.from(destSection.modules || []);
         destModules.splice(destination.index, 0, movedModule);
@@ -466,21 +493,22 @@ const CourseContentBuilder: React.FC = () => {
           if (section.id === destination.droppableId) return { ...section, modules: destModules };
           return section;
         });
-        setCourseData(prev => ({ ...prev, sections: newSections }));
+        setCourseData(prev => prev ? ({ ...prev, sections: newSections }) : null);
       }
     } else {
       const items = Array.from(courseData.sections);
       const [reorderedItem] = items.splice(source.index, 1);
       items.splice(destination.index, 0, reorderedItem);
 
-      setCourseData(prev => ({
+      setCourseData(prev => prev ? ({
         ...prev,
         sections: items
-      }));
+      }) : null);
     }
-  }, [courseData.sections]);
+  }, [courseData]);
 
   const addSection = useCallback((type: 'single-module' | 'multi-module', template?: string) => {
+    if (!courseData) return;
     const newSection: Section = {
       id: uuidv4(),
       title: type === 'single-module' ? 'New Policy' : 'New Section',
@@ -501,39 +529,42 @@ const CourseContentBuilder: React.FC = () => {
       )
     };
 
-    setCourseData(prev => ({
+    setCourseData(prev => prev ? ({
       ...prev,
       sections: [...prev.sections, newSection]
-    }));
+    }) : null);
 
     toast({
       title: "Section Added",
       description: `New ${type.replace('-', ' ')} has been added to your course.`
     });
-  }, [toast]);
+  }, [toast, courseData]);
 
   const updateSection = useCallback((sectionId: string, updates: Partial<Section>) => {
-    setCourseData(prev => ({
+    if (!courseData) return;
+    setCourseData(prev => prev ? ({
       ...prev,
       sections: prev.sections.map(section =>
         section.id === sectionId ? { ...section, ...updates } : section
       )
-    }));
-  }, []);
+    }) : null);
+  }, [courseData]);
 
   const deleteSection = useCallback((sectionId: string) => {
-    setCourseData(prev => ({
+    if (!courseData) return;
+    setCourseData(prev => prev ? ({
       ...prev,
       sections: prev.sections.filter(section => section.id !== sectionId)
-    }));
+    }) : null);
     
     toast({
       title: "Section Deleted",
       description: "The section has been removed from your course."
     });
-  }, [toast]);
+  }, [toast, courseData]);
 
   const addModuleToSection = useCallback((sectionId: string, template: string) => {
+    if (!courseData) return;
     const newModule: Module = {
       id: uuidv4(),
       title: contentModuleTemplates[template as keyof typeof contentModuleTemplates]?.title || 'New Module',
@@ -542,22 +573,23 @@ const CourseContentBuilder: React.FC = () => {
       isEditing: false
     };
 
-    setCourseData(prev => ({
+    setCourseData(prev => prev ? ({
       ...prev,
       sections: prev.sections.map(section =>
         section.id === sectionId && section.type === 'multi-module'
           ? { ...section, modules: [...(section.modules || []), newModule] }
           : section
       )
-    }));
+    }) : null);
 
     toast({
       title: "Module Added",
       description: "New module has been added to the section."
     });
-  }, [toast]);
+  }, [toast, courseData]);
 
   const onAddModule = (template: string) => {
+    if (!courseData) return;
     if (courseData.sections.length === 0) {
       addSection('multi-module', template);
     } else {
@@ -567,47 +599,16 @@ const CourseContentBuilder: React.FC = () => {
   };
 
   const updateCourseOverview = useCallback((updates: Partial<CourseData['overview']>) => {
-    setCourseData(prev => ({
+    if (!courseData) return;
+    setCourseData(prev => prev ? ({
       ...prev,
       overview: { ...prev.overview, ...updates }
-    }));
-  }, []);
+    }) : null);
+  }, [courseData]);
 
-  const saveCourse = useCallback(async () => {
-    const n8nWebhookUrl = '/webhook/course-builder';
+  const saveCourse = useCallback(() => {
+    if (!courseData) return;
 
-    // 1. Send data to n8n webhook
-    try {
-      const response = await fetch(n8nWebhookUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(courseData),
-      });
-
-      if (response.ok) {
-        toast({
-          title: "Webhook Sent",
-          description: "Course data successfully sent to n8n.",
-        });
-      } else {
-        const errorData = await response.text();
-        toast({
-          title: "Webhook Error",
-          description: `Failed to send data: ${response.status} ${response.statusText}. ${errorData}`,
-          variant: "destructive",
-        });
-      }
-    } catch (error) {
-      toast({
-        title: "Network Error",
-        description: `Could not connect to the webhook: ${error}`,
-        variant: "destructive",
-      });
-    }
-
-    // 2. Trigger JSON file download
     try {
       const jsonString = JSON.stringify(courseData, null, 2);
       const blob = new Blob([jsonString], { type: "application/json" });
@@ -632,6 +633,14 @@ const CourseContentBuilder: React.FC = () => {
       });
     }
   }, [courseData, toast]);
+
+  if (!courseData) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-lg">Loading course...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background flex">
@@ -659,25 +668,16 @@ const CourseContentBuilder: React.FC = () => {
                 variant="ghost"
                 size="sm"
                 onClick={toggleDarkMode}
-                className="text-primary-foreground hover:bg-primary-foreground/10 gap-2"
+                className="text-white hover:bg-white/10 gap-2"
               >
                 {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
                 {isDarkMode ? 'Light' : 'Dark'}
-              </Button>
-              <Button
-                variant={isPreviewMode ? "secondary" : "ghost"}
-                size="sm"
-                onClick={() => setIsPreviewMode(!isPreviewMode)}
-                className="gap-2 text-primary-foreground hover:bg-primary-foreground/10"
-              >
-                <Eye className="h-4 w-4" />
-                {isPreviewMode ? 'Exit Preview' : 'Preview'}
               </Button>
               <Button 
                 onClick={saveCourse} 
                 size="sm"
                 variant="secondary"
-                className="gap-2 bg-primary-foreground/10 text-primary-foreground hover:bg-primary-foreground/20 border-primary-foreground/20"
+                className="gap-2 bg-white/10 text-white hover:bg-white/20 border-white/20"
               >
                 <Save className="h-4 w-4" />
                 Save Course
