@@ -1,21 +1,15 @@
-version: '3.8'
+version: '3'
 
 services:
   app:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        - NODE_ENV=production
+    # No ports section - let Coolify handle this
     restart: unless-stopped
-    environment:
-      - NODE_ENV=production
-      - VITE_API_URL=${VITE_API_URL:-/api}
-    healthcheck:
-      test: ["CMD", "wget", "--spider", "-q", "http://localhost/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
-    ports:
-      - "80:80"
+    networks:
+      - coolify-network
+
+networks:
+  coolify-network:
+    external: true
