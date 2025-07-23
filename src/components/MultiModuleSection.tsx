@@ -211,25 +211,6 @@ export const MultiModuleSection: React.FC<MultiModuleSectionProps> = ({
             <div className="text-center py-8">
               <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
               <p className="text-muted-foreground mb-4">No modules in this section yet.</p>
-              {section.isEditing && (
-                <div className="flex justify-center gap-2">
-                  {Object.entries(templates).slice(0, 2).map(([key, template]) => {
-                    const Icon = templateIcons[key as keyof typeof templateIcons];
-                    return (
-                      <Button
-                        key={key}
-                        variant="outline"
-                        size="sm"
-                        onClick={() => onAddModule(key)}
-                        className="gap-2"
-                      >
-                        <Icon className="h-4 w-4" />
-                        {template.title}
-                      </Button>
-                    );
-                  })}
-                </div>
-              )}
             </div>
           )}
         </div>
