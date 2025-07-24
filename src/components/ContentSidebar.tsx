@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { Plus, FileText, Video, BookOpen, Library, FolderPlus, Layers } from 'lucide-react';
 import { Button } from './ui/button';
 import { Card } from './ui/card';
@@ -9,8 +9,12 @@ interface ContentSidebarProps {
   templates: Record<string, { title: string; content: string }>;
 }
 
-export const ContentSidebar: React.FC<ContentSidebarProps> = ({ onAddSection, onAddModule, templates }) => {
-  const templateIcons = {
+export const ContentSidebar: React.FC<ContentSidebarProps> = React.memo(({ onAddSection, onAddModule, templates }) => {
+  const [hoveredTemplate, setHoveredTemplate] = useState<string | null>(null);
+  const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
+
+  // Memoize static objects to prevent recreation
+  const templateIcons = useMemo(() => ({
     'course-overview': BookOpen,
     'reading-content': FileText,
     'video-lesson': Video,
@@ -19,9 +23,9 @@ export const ContentSidebar: React.FC<ContentSidebarProps> = ({ onAddSection, on
     'interactive-activity': FolderPlus,
     'discussion-prompt': Layers,
     'assignment-brief': FileText
-  };
+  }), []);
 
-  const templateDescriptions = {
+  const templateDescriptions = useMemo(() => ({
     'course-overview': 'A complete syllabus and course structure.',
     'reading-content': 'Text content, articles, and written materials',
     'video-lesson': 'Video content with descriptions and notes',
@@ -30,8 +34,7 @@ export const ContentSidebar: React.FC<ContentSidebarProps> = ({ onAddSection, on
     'interactive-activity': 'A hands-on lab or simulation.',
     'discussion-prompt': 'A prompt to encourage discussion.',
     'assignment-brief': 'A brief for a project or assignment.'
-  };
-
+  }), []);
   return (
     <>
       <div className="p-6 border-b border-border">
@@ -53,23 +56,52 @@ export const ContentSidebar: React.FC<ContentSidebarProps> = ({ onAddSection, on
           <div className="space-y-3">
             {Object.entries(templates).map(([key, template]) => {
               const Icon = templateIcons[key as keyof typeof templateIcons];
+              const isHovered = hoveredTemplate === key;
+              const isSelected = selectedTemplate === key;
+              
               return (
-                <Card 
+                <Card
                   key={key}
-                  className="p-4 hover:shadow-soft transition-shadow cursor-pointer"
-                  onClick={() => onAddModule(key)}
+                  className={`
+                    p-4 cursor-pointer transition-colors duration-150 ease-out
+                    ${isHovered ? 'bg-primary/5 border-primary/20' : ''}
+                    ${isSelected ? 'ring-1 ring-primary/40 bg-primary/8' : ''}
+                  `}
+                  onMouseEnter={() => setHoveredTemplate(key)}
+                  onMouseLeave={() => setHoveredTemplate(null)}
+                  onClick={() => {
+                    setSelectedTemplate(key);
+                    onAddModule(key);
+                    // Reset selection after a brief moment
+                    setTimeout(() => setSelectedTemplate(null), 200);
+                  }}
                 >
                   <div className="flex items-start space-x-3">
-                    <div className="bg-primary/10 p-2 rounded-lg">
+                    <div className={`
+                      p-2 rounded-lg transition-colors duration-150
+                      ${isHovered ? 'bg-primary/15' : 'bg-primary/10'}
+                      ${isSelected ? 'bg-primary/25' : ''}
+                    `}>
                       <Icon className="h-4 w-4 text-primary" />
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-medium text-foreground text-sm">{template.title}</h4>
-                      <p className="text-xs text-muted-foreground mt-1">
+                      <h4 className={`
+                        font-medium text-sm
+                        ${isHovered ? 'text-primary' : 'text-foreground'}
+                        ${isSelected ? 'text-primary font-semibold' : ''}
+                      `}>
+                        {template.title}
+                      </h4>
+                      <p className="text-xs mt-1 text-muted-foreground">
                         {templateDescriptions[key as keyof typeof templateDescriptions]}
                       </p>
                     </div>
                   </div>
+                  
+                  {/* Minimal selection indicator */}
+                  {isSelected && (
+                    <div className="absolute top-2 right-2 w-1.5 h-1.5 bg-primary rounded-full" />
+                  )}
                 </Card>
               );
             })}
@@ -78,4 +110,6 @@ export const ContentSidebar: React.FC<ContentSidebarProps> = ({ onAddSection, on
       </div>
     </>
   );
-};
+});
+
+ContentSidebar.displayName = 'ContentSidebar';

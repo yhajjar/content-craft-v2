@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { Edit3, Check, Trash2, GripVertical, ChevronDown, ChevronRight, Plus, FileText, Video, BookOpen, Library, FolderPlus, Layers } from 'lucide-react';
 import { Button } from './ui/button';
@@ -17,7 +17,7 @@ interface MultiModuleSectionProps {
   dragHandleProps?: any;
 }
 
-export const MultiModuleSection: React.FC<MultiModuleSectionProps> = ({
+export const MultiModuleSection: React.FC<MultiModuleSectionProps> = React.memo(({
   section,
   isPreviewMode,
   onUpdate,
@@ -26,7 +26,7 @@ export const MultiModuleSection: React.FC<MultiModuleSectionProps> = ({
   templates,
   dragHandleProps
 }) => {
-  const modules = section.modules || [];
+  const modules = useMemo(() => section.modules || [], [section.modules]);
 
   const handleTitleEdit = (title: string) => {
     onUpdate({ title });
@@ -54,7 +54,7 @@ export const MultiModuleSection: React.FC<MultiModuleSectionProps> = ({
     });
   };
 
-  const templateIcons = {
+  const templateIcons = useMemo(() => ({
     'course-overview': BookOpen,
     'reading-content': FileText,
     'video-lesson': Video,
@@ -63,7 +63,7 @@ export const MultiModuleSection: React.FC<MultiModuleSectionProps> = ({
     'interactive-activity': FolderPlus,
     'discussion-prompt': Layers,
     'assignment-brief': FileText
-  };
+  }), []);
 
   if (isPreviewMode) {
     return (
@@ -217,4 +217,6 @@ export const MultiModuleSection: React.FC<MultiModuleSectionProps> = ({
       )}
     </Card>
   );
-};
+});
+
+MultiModuleSection.displayName = 'MultiModuleSection';

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Edit3, Check, Trash2, GripVertical } from 'lucide-react';
 import { Button } from './ui/button';
 import { Card } from './ui/card';
@@ -14,14 +14,14 @@ interface SingleModuleBlockProps {
   dragHandleProps?: any;
 }
 
-export const SingleModuleBlock: React.FC<SingleModuleBlockProps> = ({
+export const SingleModuleBlock: React.FC<SingleModuleBlockProps> = React.memo(({
   section,
   isPreviewMode,
   onUpdate,
   onDelete,
   dragHandleProps
 }) => {
-  const module = section.module!;
+  const module = useMemo(() => section.module!, [section.module]);
 
   const handleTitleEdit = (title: string) => {
     onUpdate({ title });
@@ -126,4 +126,6 @@ export const SingleModuleBlock: React.FC<SingleModuleBlockProps> = ({
       </div>
     </Card>
   );
-};
+});
+
+SingleModuleBlock.displayName = 'SingleModuleBlock';

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useCallback } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { TextStyle } from '@tiptap/extension-text-style';
@@ -26,7 +26,7 @@ interface RichTextEditorProps {
   editorKey?: string; // Add unique key for each editor instance
 }
 
-export const RichTextEditor: React.FC<RichTextEditorProps> = ({
+export const RichTextEditor: React.FC<RichTextEditorProps> = React.memo(({
   value,
   onChange,
   placeholder = "Start typing...",
@@ -38,6 +38,11 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
   const uniqueKey = useMemo(() => {
     return editorKey || `editor-${Math.random().toString(36).substr(2, 9)}`;
   }, [editorKey]);
+
+  // Memoize the onChange callback to prevent unnecessary re-renders
+  const handleUpdate = useCallback(({ editor }: any) => {
+    onChange(editor.getHTML());
+  }, [onChange]);
 
   const editor = useEditor({
     extensions: [
@@ -52,11 +57,9 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
       Code,
     ],
     content: value || '',
-    onUpdate: ({ editor }) => {
-      onChange(editor.getHTML());
-    },
+    onUpdate: handleUpdate,
     editable: !readOnly,
-  }, [uniqueKey]); // Use uniqueKey as dependency
+  }, [uniqueKey, handleUpdate]); // Use uniqueKey as dependency
 
   // Update editor content when value prop changes
   useEffect(() => {
@@ -87,31 +90,32 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
     );
   }
 
-  const fontFamilies = [
+  // Memoize static arrays to prevent recreation
+  const fontFamilies = useMemo(() => [
     { name: 'Font Family', value: '' },
     { name: 'Default', value: 'sans-serif' },
     { name: 'Serif', value: 'serif' },
     { name: 'Monospace', value: 'monospace' },
     { name: 'Arial', value: 'Arial, sans-serif' },
     { name: 'Times New Roman', value: 'Times New Roman, serif' },
-  ];
+  ], []);
 
-  const fontSizes = [
+  const fontSizes = useMemo(() => [
     { name: 'Font Size', value: '' },
     { name: 'Small', value: '12px' },
     { name: 'Normal', value: '16px' },
     { name: 'Large', value: '20px' },
     { name: 'X-Large', value: '24px' },
-  ];
+  ], []);
 
-  const colors = [
+  const colors = useMemo(() => [
     { name: 'Text Color', value: '' },
     { name: 'Black', value: '#000000' },
     { name: 'Gray', value: '#666666' },
     { name: 'Red', value: '#ff0000' },
     { name: 'Blue', value: '#0000ff' },
     { name: 'Green', value: '#00ff00' },
-  ];
+  ], []);
 
   return (
     <div className="tiptap-editor" key={uniqueKey}>
@@ -220,4 +224,6 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
       </div>
     </div>
   );
-};
+});
+
+RichTextEditor.displayName = 'RichTextEditor';

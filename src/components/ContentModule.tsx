@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Edit3, Check, Trash2, FileText, Video, BookOpen, Library, GripVertical } from 'lucide-react';
 import { Button } from './ui/button';
 import { Card } from './ui/card';
@@ -14,7 +14,7 @@ interface ContentModuleProps {
   dragHandleProps?: any;
 }
 
-export const ContentModule: React.FC<ContentModuleProps> = ({
+export const ContentModule: React.FC<ContentModuleProps> = React.memo(({
   module,
   isPreviewMode,
   onUpdate,
@@ -33,7 +33,7 @@ export const ContentModule: React.FC<ContentModuleProps> = ({
     onUpdate({ isEditing: !module.isEditing });
   };
 
-  const getModuleIcon = () => {
+  const getModuleIcon = useMemo(() => {
     switch (module.template) {
       case 'video-lesson':
         return <Video className="h-5 w-5 text-primary" />;
@@ -44,13 +44,13 @@ export const ContentModule: React.FC<ContentModuleProps> = ({
       default:
         return <BookOpen className="h-5 w-5 text-primary" />;
     }
-  };
+  }, [module.template]);
 
   if (isPreviewMode) {
     return (
       <Card className="p-4 bg-muted/30">
         <div className="flex items-center gap-3 mb-3">
-          {getModuleIcon()}
+          {getModuleIcon}
           <h4 className="font-medium text-foreground">{module.title}</h4>
         </div>
         <RichTextEditor
@@ -71,7 +71,7 @@ export const ContentModule: React.FC<ContentModuleProps> = ({
           <div {...dragHandleProps} className="cursor-grab active:cursor-grabbing">
             <GripVertical className="h-5 w-5 text-muted-foreground" />
           </div>
-          {getModuleIcon()}
+          {getModuleIcon}
           {module.isEditing ? (
             <Input
               value={module.title}
@@ -118,4 +118,6 @@ export const ContentModule: React.FC<ContentModuleProps> = ({
       />
     </Card>
   );
-};
+});
+
+ContentModule.displayName = 'ContentModule';

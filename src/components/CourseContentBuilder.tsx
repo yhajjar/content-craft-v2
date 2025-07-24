@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { v4 as uuidv4 } from 'uuid';
 import courseSchemaData from '../../course-schema.json';
@@ -12,6 +12,7 @@ import { MultiModuleSection } from './MultiModuleSection';
 import { ContentSidebar } from './ContentSidebar';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
 
+// Move templates outside component to prevent recreation on every render
 const contentModuleTemplates = {
   'course-overview': {
     title: 'Course Overview & Syllabus',
@@ -408,6 +409,9 @@ const CourseContentBuilder: React.FC<CourseContentBuilderProps> = ({ rowId }) =>
   const [courseData, setCourseData] = useState<CourseData | null>(null);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
+  // Memoize the templates to prevent recreation - moved to top to maintain hook order
+  const memoizedTemplates = useMemo(() => contentModuleTemplates, []);
+
   useEffect(() => {
     const initializeCourseData = () => {
       if (rowId) {
@@ -623,7 +627,7 @@ const CourseContentBuilder: React.FC<CourseContentBuilderProps> = ({ rowId }) =>
     });
   }, [toast, courseData]);
 
-  const onAddModule = (template: string) => {
+  const onAddModule = useCallback((template: string) => {
     if (!courseData) return;
     if (courseData.sections.length === 0) {
       addSection('multi-module', template);
@@ -631,7 +635,7 @@ const CourseContentBuilder: React.FC<CourseContentBuilderProps> = ({ rowId }) =>
       const lastSection = courseData.sections[courseData.sections.length - 1];
       addModuleToSection(lastSection.id, template);
     }
-  };
+  }, [courseData, addSection, addModuleToSection]);
 
   const updateCourseOverview = useCallback((updates: Partial<CourseData['overview']>) => {
     if (!courseData) return;
@@ -669,6 +673,11 @@ const CourseContentBuilder: React.FC<CourseContentBuilderProps> = ({ rowId }) =>
     }
   }, [courseData, toast]);
 
+  const handleAddModule = useCallback((template: string) => {
+    onAddModule(template);
+    setIsSheetOpen(false);
+  }, [onAddModule]);
+
   if (!courseData) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -677,10 +686,6 @@ const CourseContentBuilder: React.FC<CourseContentBuilderProps> = ({ rowId }) =>
     );
   }
 
-  const handleAddModule = (template: string) => {
-    onAddModule(template);
-    setIsSheetOpen(false);
-  };
 
   return (
     <div className="min-h-screen bg-background flex">
@@ -689,7 +694,7 @@ const CourseContentBuilder: React.FC<CourseContentBuilderProps> = ({ rowId }) =>
         <ContentSidebar
           onAddSection={addSection}
           onAddModule={handleAddModule}
-          templates={contentModuleTemplates}
+          templates={memoizedTemplates}
         />
       </aside>
 
@@ -711,7 +716,7 @@ const CourseContentBuilder: React.FC<CourseContentBuilderProps> = ({ rowId }) =>
                     <ContentSidebar
                       onAddSection={addSection}
                       onAddModule={handleAddModule}
-                      templates={contentModuleTemplates}
+                      templates={memoizedTemplates}
                     />
                   </SheetContent>
                 </Sheet>
@@ -792,7 +797,7 @@ const CourseContentBuilder: React.FC<CourseContentBuilderProps> = ({ rowId }) =>
                                 onUpdate={(updates) => updateSection(section.id, updates)}
                                 onDelete={() => deleteSection(section.id)}
                                 onAddModule={(template) => addModuleToSection(section.id, template)}
-                                templates={contentModuleTemplates}
+                                templates={memoizedTemplates}
                                 dragHandleProps={provided.dragHandleProps}
                               />
                             )}
