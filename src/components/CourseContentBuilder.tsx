@@ -555,7 +555,7 @@ const CourseContentBuilder: React.FC<CourseContentBuilderProps> = ({ rowId }) =>
               title: contentModuleTemplates[template as keyof typeof contentModuleTemplates]?.title || 'New Content',
               content: contentModuleTemplates[template as keyof typeof contentModuleTemplates]?.content || '<p>Add your content here...</p>',
               template: template || 'course-overview',
-              isEditing: false
+              isEditing: true
             }
           }
         : { modules: [] }
@@ -609,7 +609,7 @@ const CourseContentBuilder: React.FC<CourseContentBuilderProps> = ({ rowId }) =>
       title: contentModuleTemplates[template as keyof typeof contentModuleTemplates]?.title || 'New Module',
       content: contentModuleTemplates[template as keyof typeof contentModuleTemplates]?.content || '<p>Add your content here...</p>',
       template,
-      isEditing: false
+      isEditing: true
     };
 
     setCourseData(prev => prev ? ({

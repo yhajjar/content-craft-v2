@@ -1,20 +1,15 @@
-import React, { useEffect, useMemo, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { TextStyle } from '@tiptap/extension-text-style';
 import { Color } from '@tiptap/extension-color';
-import { FontFamily } from '@tiptap/extension-font-family';
-import { FontSize } from '@tiptap/extension-font-size';
 import Underline from '@tiptap/extension-underline';
-import Superscript from '@tiptap/extension-superscript';
-import Subscript from '@tiptap/extension-subscript';
-import Code from '@tiptap/extension-code';
 import './tiptap-editor.css';
 
 // Import icons
 import {
-  Bold, Italic, Underline as UnderlineIcon, Code as CodeIcon, 
-  List, ListOrdered, Undo, Redo, Superscript as SuperscriptIcon, Subscript as SubscriptIcon
+  Bold, Italic, Underline as UnderlineIcon,
+  List, ListOrdered, Undo, Redo
 } from 'lucide-react';
 
 interface RichTextEditorProps {
@@ -23,7 +18,7 @@ interface RichTextEditorProps {
   placeholder?: string;
   readOnly?: boolean;
   compact?: boolean;
-  editorKey?: string; // Add unique key for each editor instance
+  editorKey?: string;
 }
 
 export const RichTextEditor: React.FC<RichTextEditorProps> = React.memo(({
@@ -34,14 +29,9 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = React.memo(({
   compact = false,
   editorKey
 }) => {
-  // Create a unique key for this editor instance
-  const uniqueKey = useMemo(() => {
-    return editorKey || `editor-${Math.random().toString(36).substr(2, 9)}`;
-  }, [editorKey]);
-
-  // Memoize the onChange callback to prevent unnecessary re-renders
   const handleUpdate = useCallback(({ editor }: any) => {
-    onChange(editor.getHTML());
+    const html = editor.getHTML();
+    onChange(html);
   }, [onChange]);
 
   const editor = useEditor({
@@ -49,40 +39,45 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = React.memo(({
       StarterKit,
       TextStyle,
       Color,
-      FontFamily,
-      FontSize,
       Underline,
-      Superscript,
-      Subscript,
-      Code,
     ],
     content: value || '',
     onUpdate: handleUpdate,
     editable: !readOnly,
-  }, [uniqueKey, handleUpdate]); // Use uniqueKey as dependency
+    immediatelyRender: false,
+  });
 
-  // Update editor content when value prop changes
+  // Update editor content when value changes
   useEffect(() => {
-    if (editor && value !== editor.getHTML()) {
-      editor.commands.setContent(value || '');
+    if (editor && editor.getHTML() !== value) {
+      editor.commands.setContent(value || '', { emitUpdate: false });
     }
-  }, [value, editor]);
+  }, [editor, value]);
 
-  // Update editor editable state when readOnly prop changes
+  // Update editor editable state when readOnly changes
   useEffect(() => {
     if (editor) {
       editor.setEditable(!readOnly);
     }
-  }, [readOnly, editor]);
+  }, [editor, readOnly]);
+
+  const colors = [
+    { name: 'Text Color', value: '' },
+    { name: 'Black', value: '#000000' },
+    { name: 'Gray', value: '#666666' },
+    { name: 'Red', value: '#ff0000' },
+    { name: 'Blue', value: '#0000ff' },
+    { name: 'Green', value: '#00ff00' },
+  ];
 
   if (readOnly) {
     return (
       <div className="tiptap-editor">
         <div className="tiptap-content tiptap-readonly">
-          <div 
+          <div
             className="tiptap-display-content"
-            dangerouslySetInnerHTML={{ 
-              __html: value || `<p class="text-muted-foreground italic">${placeholder}</p>` 
+            dangerouslySetInnerHTML={{
+              __html: value || `<p class="text-muted-foreground italic">${placeholder}</p>`
             }}
           />
         </div>
@@ -90,35 +85,8 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = React.memo(({
     );
   }
 
-  // Memoize static arrays to prevent recreation
-  const fontFamilies = useMemo(() => [
-    { name: 'Font Family', value: '' },
-    { name: 'Default', value: 'sans-serif' },
-    { name: 'Serif', value: 'serif' },
-    { name: 'Monospace', value: 'monospace' },
-    { name: 'Arial', value: 'Arial, sans-serif' },
-    { name: 'Times New Roman', value: 'Times New Roman, serif' },
-  ], []);
-
-  const fontSizes = useMemo(() => [
-    { name: 'Font Size', value: '' },
-    { name: 'Small', value: '12px' },
-    { name: 'Normal', value: '16px' },
-    { name: 'Large', value: '20px' },
-    { name: 'X-Large', value: '24px' },
-  ], []);
-
-  const colors = useMemo(() => [
-    { name: 'Text Color', value: '' },
-    { name: 'Black', value: '#000000' },
-    { name: 'Gray', value: '#666666' },
-    { name: 'Red', value: '#ff0000' },
-    { name: 'Blue', value: '#0000ff' },
-    { name: 'Green', value: '#00ff00' },
-  ], []);
-
   return (
-    <div className="tiptap-editor" key={uniqueKey}>
+    <div className="tiptap-editor" key={editorKey}>
       {editor && (
         <div className="tiptap-toolbar">
           <button
@@ -162,14 +130,6 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = React.memo(({
           >
             <UnderlineIcon className="h-4 w-4" />
           </button>
-          <button
-            type="button"
-            onClick={() => editor.chain().focus().toggleCode().run()}
-            className={editor.isActive('code') ? 'is-active' : ''}
-            title="Code"
-          >
-            <CodeIcon className="h-4 w-4" />
-          </button>
           
           <button
             type="button"
@@ -188,27 +148,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = React.memo(({
             <ListOrdered className="h-4 w-4" />
           </button>
           
-          <select 
-            className="h-8"
-            onChange={(e) => editor.chain().focus().setFontFamily(e.target.value).run()}
-            value={editor.getAttributes('textStyle').fontFamily || ''}
-          >
-            {fontFamilies.map((font) => (
-              <option key={font.value} value={font.value}>{font.name}</option>
-            ))}
-          </select>
-          
-          <select 
-            className="h-8"
-            onChange={(e) => editor.chain().focus().setFontSize(e.target.value).run()}
-            value={editor.getAttributes('textStyle').fontSize || ''}
-          >
-            {fontSizes.map((size) => (
-              <option key={size.value} value={size.value}>{size.name}</option>
-            ))}
-          </select>
-          
-          <select 
+          <select
             className="h-8"
             onChange={(e) => editor.chain().focus().setColor(e.target.value).run()}
             value={editor.getAttributes('textStyle').color || ''}
@@ -219,8 +159,16 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = React.memo(({
           </select>
         </div>
       )}
-      <div className="tiptap-content">
-        <EditorContent editor={editor} className="min-h-[100px] focus:outline-none" />
+      <div className="tiptap-content" style={{ minHeight: '400px' }}>
+        <EditorContent
+          editor={editor}
+          className="min-h-[400px] focus:outline-none cursor-text"
+          onClick={() => {
+            if (editor && !readOnly) {
+              editor.chain().focus().run();
+            }
+          }}
+        />
       </div>
     </div>
   );

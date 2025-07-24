@@ -114,7 +114,7 @@ export const ContentModule: React.FC<ContentModuleProps> = React.memo(({
         placeholder="Add your module content here..."
         readOnly={!module.isEditing}
         compact={true}
-        editorKey={module.id}
+        editorKey={`${module.id}-content`}
       />
     </Card>
   );
