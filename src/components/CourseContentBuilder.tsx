@@ -2,7 +2,6 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { v4 as uuidv4 } from 'uuid';
 import courseSchemaData from '../../course-schema.json';
-import { marked } from 'marked';
 import { Plus, BookOpen, FileText, Video, Library, Eye, Save, Moon, Sun, PanelLeftOpen } from 'lucide-react';
 import { Button } from './ui/button';
 import { Card } from './ui/card';
@@ -16,327 +15,352 @@ import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
 const contentModuleTemplates = {
   'course-overview': {
     title: 'Course Overview & Syllabus',
-    content: `
-# 📚 [Course Title]
+    content: `<h1>📚 [Course Title]</h1>
+<p><strong>👨‍🏫 Instructor:</strong> [Name]<br>
+<strong>⏰ Duration:</strong> [6 weeks]<br>
+<strong>🎯 Mode:</strong> [Self-paced]</p>
 
-**👨‍🏫 Instructor:** [Name]  
-**⏰ Duration:** [6 weeks]  
-**🎯 Mode:** [Self-paced]
+<h2>🎯 What You'll Learn</h2>
+<ul>
+<li>✅ [Outcome 1]</li>
+<li>✅ [Outcome 2]</li>
+<li>✅ [Outcome 3]</li>
+</ul>
 
----
+<h2>📅 Weekly Schedule</h2>
+<p><em>Customize your learning timeline:</em></p>
+<ul>
+<li><strong>Week 1:</strong> [Topic] - [Activity] - [Assessment]</li>
+<li><strong>Week 2:</strong> [Topic] - [Activity] - [Assessment]</li>
+<li><strong>Week 3:</strong> [Topic] - [Activity] - [Assessment]</li>
+</ul>
 
-## 🎯 What You'll Learn
-- ✅ [Outcome 1]
-- ✅ [Outcome 2]  
-- ✅ [Outcome 3]
+<h2>📊 Grade Breakdown</h2>
+<ul>
+<li>🔹 <strong>Quizzes:</strong> 40%</li>
+<li>🔹 <strong>Projects:</strong> 40%</li>
+<li>🔹 <strong>Participation:</strong> 20%</li>
+</ul>
 
-## 📅 Weekly Schedule
-| Week | 📖 Topic | 🎯 Activity | 📝 Assessment |
-|:----:|---------|------------|---------------|
-| 1️⃣ | [Topic] | [Activity] | [Quiz] |
-| 2️⃣ | [Topic] | [Activity] | [Project] |
-| 3️⃣ | [Topic] | [Activity] | [Discussion] |
-
-## 📊 Grade Breakdown
-- 🔹 **Quizzes:** 40%
-- 🔹 **Projects:** 40%  
-- 🔹 **Participation:** 20%
-
-> 🚀 **Ready to start?** [Start Date] → [End Date]
-`
+<p><strong>🚀 Ready to start?</strong> [Start Date] → [End Date]</p>`
   },
   'reading-content': {
     title: 'Reading Content',
-    content: `
-# 📖 [Module Title]
+    content: `<h1>📖 [Module Title]</h1>
+<p><strong>⏰ Estimated Time:</strong> [xx min]<br>
+<strong>📋 Prerequisites:</strong> [Prior knowledge or modules]</p>
 
-**⏰ Estimated Time:** [xx min]  
-**📋 Prerequisites:** [Prior knowledge or modules]
+<h2>🔥 Why This Matters</h2>
+<p>[Brief paragraph explaining real-world relevance]</p>
 
----
+<h2>🎯 Learning Objectives</h2>
+<ul>
+<li>☐ [Objective 1]</li>
+<li>☐ [Objective 2]</li>
+<li>☐ [Objective 3]</li>
+</ul>
 
-## 🔥 Why This Matters
-[Brief paragraph explaining real-world relevance]
+<h2>📝 Core Content</h2>
 
-## 🎯 Learning Objectives
-- [ ] [Objective 1]
-- [ ] [Objective 2]
-- [ ] [Objective 3]
+<h3>💡 Key Concept #1</h3>
+<p>[Explanation here]</p>
+<blockquote>
+<p><strong>💡 Example:</strong> [Concrete example]</p>
+</blockquote>
 
----
+<h3>💡 Key Concept #2</h3>
+<p>[Explanation here]</p>
 
-## 📝 Core Content
+<h3>📊 Key Terms</h3>
+<p><strong>Important definitions to remember:</strong></p>
+<ul>
+<li><strong>[Term 1]:</strong> [Definition] - <em>[Example]</em></li>
+<li><strong>[Term 2]:</strong> [Definition] - <em>[Example]</em></li>
+</ul>
 
-### 💡 Key Concept #1
-[Explanation here]
+<h2>🤔 Check Your Understanding</h2>
+<ol>
+<li>[Question 1]</li>
+<li>[Question 2]</li>
+</ol>
 
-> 💡 **Example:** [Concrete example]
-
-### 💡 Key Concept #2
-[Explanation here]
-
-### 📊 Key Terms
-| Term | Definition | Example |
-|------|------------|---------|
-| [Term 1] | [Definition] | [Example] |
-| [Term 2] | [Definition] | [Example] |
-
----
-
-## 🤔 Check Your Understanding
-1. [Question 1]
-2. [Question 2]
-
-## 📚 Further Reading
-- 🔗 [Resource 1] — *[Why it's useful]*
-- 🔗 [Resource 2] — *[Why it's useful]*
-`
+<h2>📚 Further Reading</h2>
+<ul>
+<li>🔗 <strong>[Resource 1]</strong> — <em>[Why it's useful]</em></li>
+<li>🔗 <strong>[Resource 2]</strong> — <em>[Why it's useful]</em></li>
+</ul>`
   },
   'video-lesson': {
     title: 'Video Lesson',
-    content: `
-# 🎥 [Video Title]
+    content: `<h1>🎥 [Video Title]</h1>
+<p><strong>⏰ Duration:</strong> [xx min]<br>
+<strong>📋 Level:</strong> [Beginner/Intermediate/Advanced]</p>
 
-**⏰ Duration:** [xx min]  
-**📋 Level:** [Beginner/Intermediate/Advanced]
+<h2>🎯 What You'll Learn</h2>
+<ul>
+<li>[Learning point 1]</li>
+<li>[Learning point 2]</li>
+<li>[Learning point 3]</li>
+</ul>
 
----
+<h2>📺 Video Content</h2>
+<p><em>[Video embed or link]</em></p>
 
-## 🎯 What You'll Learn
-- [Learning point 1]
-- [Learning point 2]
-- [Learning point 3]
+<h3>🕐 Key Timestamps</h3>
+<p><strong>Navigate to important sections:</strong></p>
+<ul>
+<li><strong>00:00</strong> - Introduction: <em>[Brief note]</em></li>
+<li><strong>03:45</strong> - [Concept]: <em>[Brief note]</em></li>
+<li><strong>07:10</strong> - Demo: <em>[Brief note]</em></li>
+</ul>
 
-## 📺 Video Content
-[Video embed or link]
+<h2>📝 Video Notes</h2>
+<p>[Key takeaways or transcript highlights]</p>
 
-### 🕐 Key Timestamps
-| Time | Topic | Notes |
-|------|-------|-------|
-| 00:00 | Introduction | [Brief note] |
-| 03:45 | [Concept] | [Brief note] |
-| 07:10 | Demo | [Brief note] |
+<h2>🛠️ Try It Yourself</h2>
+<p><strong>Your Task:</strong> [Clear instruction]<br>
+<strong>Time:</strong> [5 minutes]<br>
+<strong>Submit:</strong> [What to upload/do]</p>
 
----
-
-## 📝 Video Notes
-[Key takeaways or transcript highlights]
-
-## 🛠️ Try It Yourself
-**Your Task:** [Clear instruction]  
-**Time:** [5 minutes]  
-**Submit:** [What to upload/do]
-
-## 💭 Reflection Questions
-- What was the most important concept?
-- How does this apply to your work?
-- What questions do you still have?
-`
+<h2>💭 Reflection Questions</h2>
+<ul>
+<li>What was the most important concept?</li>
+<li>How does this apply to your work?</li>
+<li>What questions do you still have?</li>
+</ul>`
   },
   'lecture-notes': {
     title: 'Lecture Notes',
-    content: `
-# 📚 [Lecture Topic]
+    content: `<h1>📚 [Lecture Topic]</h1>
+<p><strong>👨‍🏫 Instructor:</strong> [Name]<br>
+<strong>📅 Date:</strong> [Date]<br>
+<strong>⏰ Session:</strong> [Week X - Lecture Y]</p>
 
-**👨‍🏫 Instructor:** [Name]  
-**📅 Date:** [Date]  
-**⏰ Session:** [Week X - Lecture Y]
+<h2>📋 Today's Agenda</h2>
+<ol>
+<li>[Item 1]</li>
+<li>[Item 2]</li>
+<li>[Item 3]</li>
+</ol>
 
----
+<h2>📝 Detailed Notes</h2>
 
-## 📋 Today's Agenda
-1. [Item 1]
-2. [Item 2]
-3. [Item 3]
+<h3>🎯 Section 1: [Heading]</h3>
+<ul>
+<li>[Key point A]</li>
+<li>[Key point B]</li>
+<li>[Key point C]</li>
+</ul>
 
-## 📝 Detailed Notes
+<blockquote>
+<p><strong>💡 Example:</strong> [Concrete example]</p>
+</blockquote>
 
-### 🎯 Section 1: [Heading]
-- [Key point A]
-- [Key point B]
-- [Key point C]
+<h3>🎯 Section 2: [Heading]</h3>
+<p>[Content here]</p>
 
-> 💡 **Example:** [Concrete example]
+<h3>📊 Important Formulas/Concepts</h3>
+<p><strong>Key concepts to remember:</strong></p>
+<ul>
+<li><strong>[Concept 1]:</strong> [Formula/Description] - <em>Use when: [When to use]</em></li>
+<li><strong>[Concept 2]:</strong> [Formula/Description] - <em>Use when: [When to use]</em></li>
+</ul>
 
-### 🎯 Section 2: [Heading]
-[Content here]
+<h2>🔑 Key Takeaways</h2>
+<ul>
+<li>[Main point 1]</li>
+<li>[Main point 2]</li>
+<li>[Main point 3]</li>
+</ul>
 
-### 📊 Important Formulas/Concepts
-| Concept | Formula/Description | Application |
-|---------|-------------------|-------------|
-| [Concept 1] | [Formula] | [When to use] |
-| [Concept 2] | [Formula] | [When to use] |
-
----
-
-## 🔑 Key Takeaways
-- [Main point 1]
-- [Main point 2]
-- [Main point 3]
-
-## 📖 Next Steps
-- **Read:** [Chapter/Article]
-- **Practice:** [Exercise]
-- **Prepare for:** [Next topic]
-`
+<h2>📖 Next Steps</h2>
+<ul>
+<li><strong>Read:</strong> [Chapter/Article]</li>
+<li><strong>Practice:</strong> [Exercise]</li>
+<li><strong>Prepare for:</strong> [Next topic]</li>
+</ul>`
   },
   'resources-references': {
     title: 'Resources & References',
-    content: `
-# 📚 Essential Resources
+    content: `<h1>📚 Essential Resources</h1>
 
-## 🔥 Must-Read/Watch
-| 📎 Resource | 📱 Type | 🎯 Why Important |
-|------------|--------|------------------|
-| [Title] | 📄 Article | [Benefit] |
-| [Title] | 🎥 Video | [Benefit] |
-| [Title] | 🛠️ Tool | [Benefit] |
+<h2>🔥 Must-Read/Watch</h2>
+<p><strong>Priority resources for this module:</strong></p>
+<ul>
+<li>📄 <strong>[Title]</strong> (Article) - <em>[Benefit]</em></li>
+<li>🎥 <strong>[Title]</strong> (Video) - <em>[Benefit]</em></li>
+<li>🛠️ <strong>[Title]</strong> (Tool) - <em>[Benefit]</em></li>
+</ul>
 
----
+<h2>💡 Supplementary Materials</h2>
+<ul>
+<li>🔗 <strong>[Resource 1]</strong> - [Brief description]</li>
+<li>🔗 <strong>[Resource 2]</strong> - [Brief description]</li>
+<li>🔗 <strong>[Resource 3]</strong> - [Brief description]</li>
+</ul>
 
-## 💡 Supplementary Materials
-- 🔗 **[Resource 1]** - [Brief description]
-- 🔗 **[Resource 2]** - [Brief description]  
-- 🔗 **[Resource 3]** - [Brief description]
+<h2>📚 Academic References</h2>
+<ol>
+<li>[Author]. ([Year]). <em>[Title]</em>. [Publisher].</li>
+<li>[Author]. ([Year]). <em>[Title]</em>. [Publisher].</li>
+<li>[Author]. ([Year]). <em>[Title]</em>. [Publisher].</li>
+</ol>
 
-## 📚 Academic References
-1. [Author]. ([Year]). *[Title]*. [Publisher].
-2. [Author]. ([Year]). *[Title]*. [Publisher].
-3. [Author]. ([Year]). *[Title]*. [Publisher].
+<h2>📥 Downloadable Files</h2>
+<ul>
+<li>📄 <strong>[File 1]</strong> - [Description]</li>
+<li>📊 <strong>[File 2]</strong> - [Description]</li>
+<li>💻 <strong>[File 3]</strong> - [Description]</li>
+</ul>
 
----
-
-## 📥 Downloadable Files
-- 📄 [File 1] - [Description]
-- 📊 [File 2] - [Description]
-- 💻 [File 3] - [Description]
-
-> 🎯 **Start here:** Focus on the "Must-Read/Watch" section first!
-`
+<blockquote>
+<p><strong>🎯 Start here:</strong> Focus on the "Must-Read/Watch" section first!</p>
+</blockquote>`
   },
   'interactive-activity': {
     title: 'Interactive Activity',
-    content: `
-# 🧪 Activity: [Title]
+    content: `<h1>🧪 Activity: [Title]</h1>
+<p><strong>🎯 Objective:</strong> [Clear goal]<br>
+<strong>⏰ Time Required:</strong> [xx min]<br>
+<strong>🛠️ Tools Needed:</strong> [List tools]</p>
 
-**🎯 Objective:** [Clear goal]  
-**⏰ Time Required:** [xx min]  
-**🛠️ Tools Needed:** [List tools]
+<h2>🚀 Getting Started</h2>
+<ol>
+<li>[Step 1]</li>
+<li>[Step 2]</li>
+<li>[Step 3]</li>
+</ol>
 
----
+<h2>📋 Instructions</h2>
 
-## 🚀 Getting Started
-1. [Step 1]
-2. [Step 2]
-3. [Step 3]
+<h3>Phase 1: [Phase Name]</h3>
+<ul>
+<li>☐ [Task 1]</li>
+<li>☐ [Task 2]</li>
+<li>☐ [Task 3]</li>
+</ul>
 
-## 📋 Instructions
+<h3>Phase 2: [Phase Name]</h3>
+<ul>
+<li>☐ [Task 1]</li>
+<li>☐ [Task 2]</li>
+</ul>
 
-### Phase 1: [Phase Name]
-- [ ] [Task 1]
-- [ ] [Task 2]
-- [ ] [Task 3]
+<h2>📊 Expected Outcomes</h2>
+<p><strong>What you should see at each step:</strong></p>
+<ul>
+<li><strong>Step 1:</strong> [Do this] → <em>[See this]</em></li>
+<li><strong>Step 2:</strong> [Do this] → <em>[See this]</em></li>
+<li><strong>Step 3:</strong> [Do this] → <em>[See this]</em></li>
+</ul>
 
-### Phase 2: [Phase Name]
-- [ ] [Task 1]
-- [ ] [Task 2]
+<h2>🤔 Reflection Questions</h2>
+<ul>
+<li>What did you discover?</li>
+<li>What challenges did you face?</li>
+<li>How would you apply this in real situations?</li>
+</ul>
 
-## 📊 Expected Outcomes
-| Step | Action | Expected Result |
-|------|--------|----------------|
-| 1 | [Do this] | [See this] |
-| 2 | [Do this] | [See this] |
-| 3 | [Do this] | [See this] |
+<h2>📤 Submission</h2>
+<p><strong>What to submit:</strong> [File type/format]<br>
+<strong>Where to submit:</strong> [Platform/location]<br>
+<strong>Due date:</strong> [Date]</p>
 
----
-
-## 🤔 Reflection Questions
-- What did you discover?
-- What challenges did you face?
-- How would you apply this in real situations?
-
-## 📤 Submission
-**What to submit:** [File type/format]  
-**Where to submit:** [Platform/location]  
-**Due date:** [Date]
-
-> 🆘 **Need help?** Check the FAQ or ask in the discussion forum!
-`
+<blockquote>
+<p><strong>🆘 Need help?</strong> Check the FAQ or ask in the discussion forum!</p>
+</blockquote>`
   },
   'discussion-prompt': {
     title: 'Discussion Prompt',
-    content: `
-# 💬 Discussion: [Topic]
+    content: `<h1>💬 Discussion: [Topic]</h1>
 
-## 🎯 The Question
-> [Thought-provoking question or scenario]
+<h2>🎯 The Question</h2>
+<blockquote>
+<p>[Thought-provoking question or scenario]</p>
+</blockquote>
 
----
+<h2>📝 Your Mission</h2>
+<ul>
+<li><strong>✍️ Initial Post:</strong> [150+ words] by [date]</li>
+<li><strong>💬 Responses:</strong> Reply to [2] classmates by [date]</li>
+<li><strong>📚 Sources:</strong> Include at least [1] credible source</li>
+</ul>
 
-## 📝 Your Mission
-- **✍️ Initial Post:** [150+ words] by [date]
-- **💬 Responses:** Reply to [2] classmates by [date]
-- **📚 Sources:** Include at least [1] credible source
+<h2>🌟 What Makes a Great Post?</h2>
+<ul>
+<li>✅ <strong>Connects</strong> course concepts to real examples</li>
+<li>✅ <strong>Asks</strong> thoughtful follow-up questions</li>
+<li>✅ <strong>Cites</strong> credible sources (APA format)</li>
+<li>✅ <strong>Engages</strong> respectfully with others' ideas</li>
+</ul>
 
-## 🌟 What Makes a Great Post?
-- ✅ **Connects** course concepts to real examples
-- ✅ **Asks** thoughtful follow-up questions
-- ✅ **Cites** credible sources (APA format)
-- ✅ **Engages** respectfully with others' ideas
+<h2>🤔 Discussion Starters</h2>
+<ul>
+<li>Consider the perspective of...</li>
+<li>What would happen if...</li>
+<li>Based on [reading/video], I think...</li>
+<li>This reminds me of...</li>
+</ul>
 
-## 🤔 Discussion Starters
-- Consider the perspective of...
-- What would happen if...
-- Based on [reading/video], I think...
-- This reminds me of...
-
----
-
-> 📚 **Tip:** Review [specific course materials] before posting!
-`
+<blockquote>
+<p><strong>📚 Tip:</strong> Review [specific course materials] before posting!</p>
+</blockquote>`
   },
   'assignment-brief': {
     title: 'Assignment Brief',
-    content: `
-# 📋 Assignment: [Title]
+    content: `<h1>📋 Assignment: [Title]</h1>
+<p><strong>📊 Weight:</strong> [XX%] of final grade<br>
+<strong>📅 Due Date:</strong> [Date and time]<br>
+<strong>⏰ Estimated Time:</strong> [X hours]</p>
 
-**📊 Weight:** [XX%] of final grade  
-**📅 Due Date:** [Date and time]  
-**⏰ Estimated Time:** [X hours]
+<h2>🎯 Assignment Overview</h2>
+<p>[Clear description of what students need to create/analyze/solve]</p>
 
----
+<h2>📋 Requirements</h2>
+<ul>
+<li>☐ [Requirement 1]</li>
+<li>☐ [Requirement 2]</li>
+<li>☐ [Requirement 3]</li>
+<li>☐ [Requirement 4]</li>
+</ul>
 
-## 🎯 Assignment Overview
-[Clear description of what students need to create/analyze/solve]
+<h2>📦 Deliverables</h2>
+<ol>
+<li><strong>[Item 1]:</strong> [Description] ([format], max [size/length])</li>
+<li><strong>[Item 2]:</strong> [Description] ([format], max [size/length])</li>
+<li><strong>[Item 3]:</strong> [Description] ([format], max [size/length])</li>
+</ol>
 
-## 📋 Requirements
-- [ ] [Requirement 1]
-- [ ] [Requirement 2]
-- [ ] [Requirement 3]
-- [ ] [Requirement 4]
+<h2>🏆 Grading Criteria</h2>
+<p><strong>How your work will be evaluated:</strong></p>
+<ul>
+<li><strong>[Criterion 1]:</strong>
+  <ul>
+    <li>Excellent (A): [Description]</li>
+    <li>Good (B): [Description]</li>
+    <li>Satisfactory (C): [Description]</li>
+  </ul>
+</li>
+<li><strong>[Criterion 2]:</strong>
+  <ul>
+    <li>Excellent (A): [Description]</li>
+    <li>Good (B): [Description]</li>
+    <li>Satisfactory (C): [Description]</li>
+  </ul>
+</li>
+</ul>
 
-## 📦 Deliverables
-1. **[Item 1]:** [Description] ([format], max [size/length])
-2. **[Item 2]:** [Description] ([format], max [size/length])  
-3. **[Item 3]:** [Description] ([format], max [size/length])
+<h2>📤 Submission Guidelines</h2>
+<ul>
+<li><strong>Format:</strong> [File type]</li>
+<li><strong>Naming:</strong> [Convention]</li>
+<li><strong>Platform:</strong> [Where to submit]</li>
+<li><strong>Late Policy:</strong> [Penalty description]</li>
+</ul>
 
----
-
-## 🏆 Grading Criteria
-| Criteria | Excellent (A) | Good (B) | Satisfactory (C) |
-|----------|---------------|----------|------------------|
-| **[Criterion 1]** | [Description] | [Description] | [Description] |
-| **[Criterion 2]** | [Description] | [Description] | [Description] |
-| **[Criterion 3]** | [Description] | [Description] | [Description] |
-
-## 📤 Submission Guidelines
-- **Format:** [File type]
-- **Naming:** [Convention]
-- **Platform:** [Where to submit]
-- **Late Policy:** [Penalty description]
-
-> 💡 **Success Tip:** Start early and ask questions during office hours!
-`
+<blockquote>
+<p><strong>💡 Success Tip:</strong> Start early and ask questions during office hours!</p>
+</blockquote>`
   }
 };
 
@@ -525,7 +549,7 @@ const CourseContentBuilder: React.FC<CourseContentBuilderProps> = ({ rowId }) =>
             module: {
               id: `mod_${newSectionId}_1`,
               title: contentModuleTemplates[template as keyof typeof contentModuleTemplates]?.title || 'New Content',
-              content: marked(contentModuleTemplates[template as keyof typeof contentModuleTemplates]?.content) as string || '<p>Add your content here...</p>',
+              content: contentModuleTemplates[template as keyof typeof contentModuleTemplates]?.content || '<p>Add your content here...</p>',
               template: template || 'course-overview',
               isEditing: false
             }
@@ -579,7 +603,7 @@ const CourseContentBuilder: React.FC<CourseContentBuilderProps> = ({ rowId }) =>
     const newModule: Module = {
       id: newModuleId,
       title: contentModuleTemplates[template as keyof typeof contentModuleTemplates]?.title || 'New Module',
-      content: marked(contentModuleTemplates[template as keyof typeof contentModuleTemplates]?.content) as string || '<p>Add your content here...</p>',
+      content: contentModuleTemplates[template as keyof typeof contentModuleTemplates]?.content || '<p>Add your content here...</p>',
       template,
       isEditing: false
     };

@@ -50,8 +50,15 @@ export const CourseOverview: React.FC<CourseOverviewProps> = ({ overview, isPrev
         <div className="max-w-3xl">
           <h1 className="text-3xl font-bold text-foreground mb-6">{overview.title}</h1>
           
-          <div className="prose prose-slate max-w-none mb-8" 
-               dangerouslySetInnerHTML={{ __html: overview.content }} />
+          <div className="mb-8">
+            <RichTextEditor
+              value={overview.content}
+              onChange={() => {}} // No-op since it's preview mode
+              readOnly={true}
+              compact={true}
+              editorKey="preview-course-overview"
+            />
+          </div>
 
           <div className="grid md:grid-cols-2 gap-6">
             <div>
@@ -132,10 +139,12 @@ export const CourseOverview: React.FC<CourseOverviewProps> = ({ overview, isPrev
         <div>
           <label className="block text-sm font-medium text-foreground mb-2">Course Description</label>
           <RichTextEditor
+            key={`course-overview-${overview.isEditing}`}
             value={overview.content}
             onChange={handleContentEdit}
             placeholder="Describe your course, what students will learn, and what makes it valuable..."
             readOnly={!overview.isEditing}
+            editorKey="course-overview"
           />
         </div>
 

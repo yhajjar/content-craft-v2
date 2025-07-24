@@ -53,9 +53,12 @@ export const ContentModule: React.FC<ContentModuleProps> = ({
           {getModuleIcon()}
           <h4 className="font-medium text-foreground">{module.title}</h4>
         </div>
-        <div 
-          className="prose prose-slate prose-sm max-w-none"
-          dangerouslySetInnerHTML={{ __html: module.content }}
+        <RichTextEditor
+          value={module.content}
+          onChange={() => {}} // No-op since it's preview mode
+          readOnly={true}
+          compact={true}
+          editorKey={`preview-${module.id}`}
         />
       </Card>
     );
@@ -105,11 +108,13 @@ export const ContentModule: React.FC<ContentModuleProps> = ({
       </div>
 
       <RichTextEditor
+        key={`${module.id}-${module.isEditing}`}
         value={module.content}
         onChange={handleContentEdit}
         placeholder="Add your module content here..."
         readOnly={!module.isEditing}
         compact={true}
+        editorKey={module.id}
       />
     </Card>
   );

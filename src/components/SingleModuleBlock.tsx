@@ -49,9 +49,12 @@ export const SingleModuleBlock: React.FC<SingleModuleBlockProps> = ({
         <h2 className="text-xl font-semibold text-foreground mb-4">{section.title}</h2>
         <div className="bg-section-header rounded-lg p-4">
           <h3 className="text-lg font-medium text-foreground mb-3">{module.title}</h3>
-          <div 
-            className="prose prose-slate max-w-none"
-            dangerouslySetInnerHTML={{ __html: module.content }}
+          <RichTextEditor
+            value={module.content}
+            onChange={() => {}} // No-op since it's preview mode
+            readOnly={true}
+            compact={true}
+            editorKey={`preview-${module.id}`}
           />
         </div>
       </Card>
@@ -113,10 +116,12 @@ export const SingleModuleBlock: React.FC<SingleModuleBlockProps> = ({
         </div>
         
         <RichTextEditor
+          key={`${module.id}-${section.isEditing}`}
           value={module.content}
           onChange={handleContentEdit}
           placeholder="Add your content here. Use the rich text editor to format text, add images, links, and structure your content..."
           readOnly={!section.isEditing}
+          editorKey={module.id}
         />
       </div>
     </Card>
