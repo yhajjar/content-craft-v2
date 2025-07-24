@@ -17,433 +17,325 @@ const contentModuleTemplates = {
   'course-overview': {
     title: 'Course Overview & Syllabus',
     content: `
-<h1 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">📚</span> [Course Title]</h1>
-<p><strong>👨‍🏫 Instructor:</strong> [Name]<br><strong>⏰ Duration:</strong> [6 weeks]<br><strong>🎯 Mode:</strong> [Self-paced]</p>
-<hr>
-<h2 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">🎯</span> What You'll Learn</h2>
-<ul>
-<li>✅ [Outcome 1]</li>
-<li>✅ [Outcome 2]</li>
-<li>✅ [Outcome 3]</li>
-</ul>
-<h2 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">📅</span> Weekly Schedule</h2>
-<table style="border-collapse: collapse; width: 100%;">
-<thead>
-<tr>
-<th style="padding: 8px; border-bottom: 2px solid #ccc; text-align: center;">Week</th>
-<th style="padding: 8px; border-bottom: 2px solid #ccc; text-align: left;">📖 Topic</th>
-<th style="padding: 8px; border-bottom: 2px solid #ccc; text-align: left;">🎯 Activity</th>
-<th style="padding: 8px; border-bottom: 2px solid #ccc; text-align: left;">📝 Assessment</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="padding: 8px; border-bottom: 1px solid #eee; text-align: center;">1️⃣</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Topic]</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Activity]</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Quiz]</td>
-</tr>
-<tr>
-<td style="padding: 8px; border-bottom: 1px solid #eee; text-align: center;">2️⃣</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Topic]</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Project]</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Project]</td>
-</tr>
-<tr>
-<td style="padding: 8px; border-bottom: 1px solid #eee; text-align: center;">3️⃣</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Topic]</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Activity]</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Discussion]</td>
-</tr>
-</tbody>
-</table>
-<h2 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">📊</span> Grade Breakdown</h2>
-<ul>
-<li>🔹 <strong>Quizzes:</strong> 40%</li>
-<li>🔹 <strong>Projects:</strong> 40%</li>
-<li>🔹 <strong>Participation:</strong> 20%</li>
-</ul>
-<blockquote><p>🚀 <strong>Ready to start?</strong> [Start Date] → [End Date]</p></blockquote>
+# 📚 [Course Title]
+
+**👨‍🏫 Instructor:** [Name]  
+**⏰ Duration:** [6 weeks]  
+**🎯 Mode:** [Self-paced]
+
+---
+
+## 🎯 What You'll Learn
+- ✅ [Outcome 1]
+- ✅ [Outcome 2]  
+- ✅ [Outcome 3]
+
+## 📅 Weekly Schedule
+| Week | 📖 Topic | 🎯 Activity | 📝 Assessment |
+|:----:|---------|------------|---------------|
+| 1️⃣ | [Topic] | [Activity] | [Quiz] |
+| 2️⃣ | [Topic] | [Activity] | [Project] |
+| 3️⃣ | [Topic] | [Activity] | [Discussion] |
+
+## 📊 Grade Breakdown
+- 🔹 **Quizzes:** 40%
+- 🔹 **Projects:** 40%  
+- 🔹 **Participation:** 20%
+
+> 🚀 **Ready to start?** [Start Date] → [End Date]
 `
   },
   'reading-content': {
     title: 'Reading Content',
     content: `
-<h1 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">📖</span> [Module Title]</h1>
-<p><strong>⏰ Estimated Time:</strong> [xx min]<br><strong>📋 Prerequisites:</strong> [Prior knowledge or modules]</p>
-<hr>
-<h2 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">🔥</span> Why This Matters</h2>
-<p>[Brief paragraph explaining real-world relevance]</p>
-<h2 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">🎯</span> Learning Objectives</h2>
-<ul>
-<li>[ ] [Objective 1]</li>
-<li>[ ] [Objective 2]</li>
-<li>[ ] [Objective 3]</li>
-</ul>
-<hr>
-<h2 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">📝</span> Core Content</h2>
-<h3 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">💡</span> Key Concept #1</h3>
-<p>[Explanation here]</p>
-<blockquote><p>💡 <strong>Example:</strong> [Concrete example]</p></blockquote>
-<h3 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">💡</span> Key Concept #2</h3>
-<p>[Explanation here]</p>
-<h3 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">📊</span> Key Terms</h3>
-<table style="border-collapse: collapse; width: 100%;">
-<thead>
-<tr>
-<th style="padding: 8px; border-bottom: 2px solid #ccc; text-align: left;">Term</th>
-<th style="padding: 8px; border-bottom: 2px solid #ccc; text-align: left;">Definition</th>
-<th style="padding: 8px; border-bottom: 2px solid #ccc; text-align: left;">Example</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Term 1]</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Definition]</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Example]</td>
-</tr>
-<tr>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Term 2]</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Definition]</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Example]</td>
-</tr>
-</tbody>
-</table>
-<hr>
-<h2 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">🤔</span> Check Your Understanding</h2>
-<ol>
-<li>[Question 1]</li>
-<li>[Question 2]</li>
-</ol>
-<h2 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">📚</span> Further Reading</h2>
-<ul>
-<li>🔗 [Resource 1] — <em>[Why it's useful]</em></li>
-<li>🔗 [Resource 2] — <em>[Why it's useful]</em></li>
-</ul>
+# 📖 [Module Title]
+
+**⏰ Estimated Time:** [xx min]  
+**📋 Prerequisites:** [Prior knowledge or modules]
+
+---
+
+## 🔥 Why This Matters
+[Brief paragraph explaining real-world relevance]
+
+## 🎯 Learning Objectives
+- [ ] [Objective 1]
+- [ ] [Objective 2]
+- [ ] [Objective 3]
+
+---
+
+## 📝 Core Content
+
+### 💡 Key Concept #1
+[Explanation here]
+
+> 💡 **Example:** [Concrete example]
+
+### 💡 Key Concept #2
+[Explanation here]
+
+### 📊 Key Terms
+| Term | Definition | Example |
+|------|------------|---------|
+| [Term 1] | [Definition] | [Example] |
+| [Term 2] | [Definition] | [Example] |
+
+---
+
+## 🤔 Check Your Understanding
+1. [Question 1]
+2. [Question 2]
+
+## 📚 Further Reading
+- 🔗 [Resource 1] — *[Why it's useful]*
+- 🔗 [Resource 2] — *[Why it's useful]*
 `
   },
   'video-lesson': {
     title: 'Video Lesson',
     content: `
-<h1 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">🎥</span> [Video Title]</h1>
-<p><strong>⏰ Duration:</strong> [xx min]<br><strong>📋 Level:</strong> [Beginner/Intermediate/Advanced]</p>
-<hr>
-<h2 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">🎯</span> What You'll Learn</h2>
-<ul>
-<li>[Learning point 1]</li>
-<li>[Learning point 2]</li>
-<li>[Learning point 3]</li>
-</ul>
-<h2 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">📺</span> Video Content</h2>
-<p>[Video embed or link]</p>
-<h3 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">🕐</span> Key Timestamps</h3>
-<table style="border-collapse: collapse; width: 100%;">
-<thead>
-<tr>
-<th style="padding: 8px; border-bottom: 2px solid #ccc; text-align: left;">Time</th>
-<th style="padding: 8px; border-bottom: 2px solid #ccc; text-align: left;">Topic</th>
-<th style="padding: 8px; border-bottom: 2px solid #ccc; text-align: left;">Notes</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">00:00</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">Introduction</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Brief note]</td>
-</tr>
-<tr>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">03:45</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Concept]</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Brief note]</td>
-</tr>
-<tr>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">07:10</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">Demo</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Brief note]</td>
-</tr>
-</tbody>
-</table>
-<hr>
-<h2 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">📝</span> Video Notes</h2>
-<p>[Key takeaways or transcript highlights]</p>
-<h2 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">🛠️</span> Try It Yourself</h2>
-<p><strong>Your Task:</strong> [Clear instruction]<br><strong>Time:</strong> [5 minutes]<br><strong>Submit:</strong> [What to upload/do]</p>
-<h2 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">💭</span> Reflection Questions</h2>
-<ul>
-<li>What was the most important concept?</li>
-<li>How does this apply to your work?</li>
-<li>What questions do you still have?</li>
-</ul>
+# 🎥 [Video Title]
+
+**⏰ Duration:** [xx min]  
+**📋 Level:** [Beginner/Intermediate/Advanced]
+
+---
+
+## 🎯 What You'll Learn
+- [Learning point 1]
+- [Learning point 2]
+- [Learning point 3]
+
+## 📺 Video Content
+[Video embed or link]
+
+### 🕐 Key Timestamps
+| Time | Topic | Notes |
+|------|-------|-------|
+| 00:00 | Introduction | [Brief note] |
+| 03:45 | [Concept] | [Brief note] |
+| 07:10 | Demo | [Brief note] |
+
+---
+
+## 📝 Video Notes
+[Key takeaways or transcript highlights]
+
+## 🛠️ Try It Yourself
+**Your Task:** [Clear instruction]  
+**Time:** [5 minutes]  
+**Submit:** [What to upload/do]
+
+## 💭 Reflection Questions
+- What was the most important concept?
+- How does this apply to your work?
+- What questions do you still have?
 `
   },
   'lecture-notes': {
     title: 'Lecture Notes',
     content: `
-<h1 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">📚</span> [Lecture Topic]</h1>
-<p><strong>👨‍🏫 Instructor:</strong> [Name]<br><strong>📅 Date:</strong> [Date]<br><strong>⏰ Session:</strong> [Week X - Lecture Y]</p>
-<hr>
-<h2 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">📋</span> Today's Agenda</h2>
-<ol>
-<li>[Item 1]</li>
-<li>[Item 2]</li>
-<li>[Item 3]</li>
-</ol>
-<h2 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">📝</span> Detailed Notes</h2>
-<h3 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">🎯</span> Section 1: [Heading]</h3>
-<ul>
-<li>[Key point A]</li>
-<li>[Key point B]</li>
-<li>[Key point C]</li>
-</ul>
-<blockquote><p>💡 <strong>Example:</strong> [Concrete example]</p></blockquote>
-<h3 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">🎯</span> Section 2: [Heading]</h3>
-<p>[Content here]</p>
-<h3 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">📊</span> Important Formulas/Concepts</h3>
-<table style="border-collapse: collapse; width: 100%;">
-<thead>
-<tr>
-<th style="padding: 8px; border-bottom: 2px solid #ccc; text-align: left;">Concept</th>
-<th style="padding: 8px; border-bottom: 2px solid #ccc; text-align: left;">Formula/Description</th>
-<th style="padding: 8px; border-bottom: 2px solid #ccc; text-align: left;">Application</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Concept 1]</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Formula]</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[When to use]</td>
-</tr>
-<tr>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Concept 2]</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Formula]</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[When to use]</td>
-</tr>
-</tbody>
-</table>
-<hr>
-<h2 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">🔑</span> Key Takeaways</h2>
-<ul>
-<li>[Main point 1]</li>
-<li>[Main point 2]</li>
-<li>[Main point 3]</li>
-</ul>
-<h2 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">📖</span> Next Steps</h2>
-<ul>
-<li><strong>Read:</strong> [Chapter/Article]</li>
-<li><strong>Practice:</strong> [Exercise]</li>
-<li><strong>Prepare for:</strong> [Next topic]</li>
-</ul>
+# 📚 [Lecture Topic]
+
+**👨‍🏫 Instructor:** [Name]  
+**📅 Date:** [Date]  
+**⏰ Session:** [Week X - Lecture Y]
+
+---
+
+## 📋 Today's Agenda
+1. [Item 1]
+2. [Item 2]
+3. [Item 3]
+
+## 📝 Detailed Notes
+
+### 🎯 Section 1: [Heading]
+- [Key point A]
+- [Key point B]
+- [Key point C]
+
+> 💡 **Example:** [Concrete example]
+
+### 🎯 Section 2: [Heading]
+[Content here]
+
+### 📊 Important Formulas/Concepts
+| Concept | Formula/Description | Application |
+|---------|-------------------|-------------|
+| [Concept 1] | [Formula] | [When to use] |
+| [Concept 2] | [Formula] | [When to use] |
+
+---
+
+## 🔑 Key Takeaways
+- [Main point 1]
+- [Main point 2]
+- [Main point 3]
+
+## 📖 Next Steps
+- **Read:** [Chapter/Article]
+- **Practice:** [Exercise]
+- **Prepare for:** [Next topic]
 `
   },
   'resources-references': {
     title: 'Resources & References',
     content: `
-<h1 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">📚</span> Essential Resources</h1>
-<h2 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">🔥</span> Must-Read/Watch</h2>
-<table style="border-collapse: collapse; width: 100%;">
-<thead>
-<tr>
-<th style="padding: 8px; border-bottom: 2px solid #ccc; text-align: left;">📎 Resource</th>
-<th style="padding: 8px; border-bottom: 2px solid #ccc; text-align: left;">📱 Type</th>
-<th style="padding: 8px; border-bottom: 2px solid #ccc; text-align: left;">🎯 Why Important</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Title]</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">📄 Article</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Benefit]</td>
-</tr>
-<tr>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Title]</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">🎥 Video</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Benefit]</td>
-</tr>
-<tr>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Title]</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">🛠️ Tool</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Benefit]</td>
-</tr>
-</tbody>
-</table>
-<hr>
-<h2 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">💡</span> Supplementary Materials</h2>
-<ul>
-<li>🔗 <strong>[Resource 1]</strong> - [Brief description]</li>
-<li>🔗 <strong>[Resource 2]</strong> - [Brief description]</li>
-<li>🔗 <strong>[Resource 3]</strong> - [Brief description]</li>
-</ul>
-<h2 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">📚</span> Academic References</h2>
-<ol>
-<li>[Author]. ([Year]). <em>[Title]</em>. [Publisher].</li>
-<li>[Author]. ([Year]). <em>[Title]</em>. [Publisher].</li>
-<li>[Author]. ([Year]). <em>[Title]</em>. [Publisher].</li>
-</ol>
-<hr>
-<h2 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">📥</span> Downloadable Files</h2>
-<ul>
-<li>📄 [File 1] - [Description]</li>
-<li>📊 [File 2] - [Description]</li>
-<li>💻 [File 3] - [Description]</li>
-</ul>
-<blockquote><p>🎯 <strong>Start here:</strong> Focus on the "Must-Read/Watch" section first!</p></blockquote>
+# 📚 Essential Resources
+
+## 🔥 Must-Read/Watch
+| 📎 Resource | 📱 Type | 🎯 Why Important |
+|------------|--------|------------------|
+| [Title] | 📄 Article | [Benefit] |
+| [Title] | 🎥 Video | [Benefit] |
+| [Title] | 🛠️ Tool | [Benefit] |
+
+---
+
+## 💡 Supplementary Materials
+- 🔗 **[Resource 1]** - [Brief description]
+- 🔗 **[Resource 2]** - [Brief description]  
+- 🔗 **[Resource 3]** - [Brief description]
+
+## 📚 Academic References
+1. [Author]. ([Year]). *[Title]*. [Publisher].
+2. [Author]. ([Year]). *[Title]*. [Publisher].
+3. [Author]. ([Year]). *[Title]*. [Publisher].
+
+---
+
+## 📥 Downloadable Files
+- 📄 [File 1] - [Description]
+- 📊 [File 2] - [Description]
+- 💻 [File 3] - [Description]
+
+> 🎯 **Start here:** Focus on the "Must-Read/Watch" section first!
 `
   },
   'interactive-activity': {
     title: 'Interactive Activity',
     content: `
-<h1 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">🧪</span> Activity: [Title]</h1>
-<p><strong>🎯 Objective:</strong> [Clear goal]<br><strong>⏰ Time Required:</strong> [xx min]<br><strong>🛠️ Tools Needed:</strong> [List tools]</p>
-<hr>
-<h2 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">🚀</span> Getting Started</h2>
-<ol>
-<li>[Step 1]</li>
-<li>[Step 2]</li>
-<li>[Step 3]</li>
-</ol>
-<h2 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">📋</span> Instructions</h2>
-<h3 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;">Phase 1: [Phase Name]</h3>
-<ul>
-<li>[ ] [Task 1]</li>
-<li>[ ] [Task 2]</li>
-<li>[ ] [Task 3]</li>
-</ul>
-<h3 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;">Phase 2: [Phase Name]</h3>
-<ul>
-<li>[ ] [Task 1]</li>
-<li>[ ] [Task 2]</li>
-</ul>
-<h2 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">📊</span> Expected Outcomes</h2>
-<table style="border-collapse: collapse; width: 100%;">
-<thead>
-<tr>
-<th style="padding: 8px; border-bottom: 2px solid #ccc; text-align: left;">Step</th>
-<th style="padding: 8px; border-bottom: 2px solid #ccc; text-align: left;">Action</th>
-<th style="padding: 8px; border-bottom: 2px solid #ccc; text-align: left;">Expected Result</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">1</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Do this]</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[See this]</td>
-</tr>
-<tr>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">2</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Do this]</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[See this]</td>
-</tr>
-<tr>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">3</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Do this]</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[See this]</td>
-</tr>
-</tbody>
-</table>
-<hr>
-<h2 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">🤔</span> Reflection Questions</h2>
-<ul>
-<li>What did you discover?</li>
-<li>What challenges did you face?</li>
-<li>How would you apply this in real situations?</li>
-</ul>
-<h2 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">📤</span> Submission</h2>
-<p><strong>What to submit:</strong> [File type/format]<br><strong>Where to submit:</strong> [Platform/location]<br><strong>Due date:</strong> [Date]</p>
-<blockquote><p>🆘 <strong>Need help?</strong> Check the FAQ or ask in the discussion forum!</p></blockquote>
+# 🧪 Activity: [Title]
+
+**🎯 Objective:** [Clear goal]  
+**⏰ Time Required:** [xx min]  
+**🛠️ Tools Needed:** [List tools]
+
+---
+
+## 🚀 Getting Started
+1. [Step 1]
+2. [Step 2]
+3. [Step 3]
+
+## 📋 Instructions
+
+### Phase 1: [Phase Name]
+- [ ] [Task 1]
+- [ ] [Task 2]
+- [ ] [Task 3]
+
+### Phase 2: [Phase Name]
+- [ ] [Task 1]
+- [ ] [Task 2]
+
+## 📊 Expected Outcomes
+| Step | Action | Expected Result |
+|------|--------|----------------|
+| 1 | [Do this] | [See this] |
+| 2 | [Do this] | [See this] |
+| 3 | [Do this] | [See this] |
+
+---
+
+## 🤔 Reflection Questions
+- What did you discover?
+- What challenges did you face?
+- How would you apply this in real situations?
+
+## 📤 Submission
+**What to submit:** [File type/format]  
+**Where to submit:** [Platform/location]  
+**Due date:** [Date]
+
+> 🆘 **Need help?** Check the FAQ or ask in the discussion forum!
 `
   },
   'discussion-prompt': {
     title: 'Discussion Prompt',
     content: `
-<h1 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">💬</span> Discussion: [Topic]</h1>
-<h2 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">🎯</span> The Question</h2>
-<blockquote><p>[Thought-provoking question or scenario]</p></blockquote>
-<hr>
-<h2 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">📝</span> Your Mission</h2>
-<ul>
-<li><strong>✍️ Initial Post:</strong> [150+ words] by [date]</li>
-<li><strong>💬 Responses:</strong> Reply to [2] classmates by [date]</li>
-<li><strong>📚 Sources:</strong> Include at least [1] credible source</li>
-</ul>
-<h2 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">🌟</span> What Makes a Great Post?</h2>
-<ul>
-<li>✅ <strong>Connects</strong> course concepts to real examples</li>
-<li>✅ <strong>Asks</strong> thoughtful follow-up questions</li>
-<li>✅ <strong>Cites</strong> credible sources (APA format)</li>
-<li>✅ <strong>Engages</strong> respectfully with others' ideas</li>
-</ul>
-<h2 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">🤔</span> Discussion Starters</h2>
-<ul>
-<li>Consider the perspective of...</li>
-<li>What would happen if...</li>
-<li>Based on [reading/video], I think...</li>
-<li>This reminds me of...</li>
-</ul>
-<hr>
-<blockquote><p>📚 <strong>Tip:</strong> Review [specific course materials] before posting!</p></blockquote>
+# 💬 Discussion: [Topic]
+
+## 🎯 The Question
+> [Thought-provoking question or scenario]
+
+---
+
+## 📝 Your Mission
+- **✍️ Initial Post:** [150+ words] by [date]
+- **💬 Responses:** Reply to [2] classmates by [date]
+- **📚 Sources:** Include at least [1] credible source
+
+## 🌟 What Makes a Great Post?
+- ✅ **Connects** course concepts to real examples
+- ✅ **Asks** thoughtful follow-up questions
+- ✅ **Cites** credible sources (APA format)
+- ✅ **Engages** respectfully with others' ideas
+
+## 🤔 Discussion Starters
+- Consider the perspective of...
+- What would happen if...
+- Based on [reading/video], I think...
+- This reminds me of...
+
+---
+
+> 📚 **Tip:** Review [specific course materials] before posting!
 `
   },
   'assignment-brief': {
     title: 'Assignment Brief',
     content: `
-<h1 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">📋</span> Assignment: [Title]</h1>
-<p><strong>📊 Weight:</strong> [XX%] of final grade<br><strong>📅 Due Date:</strong> [Date and time]<br><strong>⏰ Estimated Time:</strong> [X hours]</p>
-<hr>
-<h2 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">🎯</span> Assignment Overview</h2>
-<p>[Clear description of what students need to create/analyze/solve]</p>
-<h2 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">📋</span> Requirements</h2>
-<ul>
-<li>[ ] [Requirement 1]</li>
-<li>[ ] [Requirement 2]</li>
-<li>[ ] [Requirement 3]</li>
-<li>[ ] [Requirement 4]</li>
-</ul>
-<h2 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">📦</span> Deliverables</h2>
-<ol>
-<li><strong>[Item 1]:</strong> [Description] ([format], max [size/length])</li>
-<li><strong>[Item 2]:</strong> [Description] ([format], max [size/length])</li>
-<li><strong>[Item 3]:</strong> [Description] ([format], max [size/length])</li>
-</ol>
-<hr>
-<h2 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">🏆</span> Grading Criteria</h2>
-<table style="border-collapse: collapse; width: 100%;">
-<thead>
-<tr>
-<th style="padding: 8px; border-bottom: 2px solid #ccc; text-align: left;">Criteria</th>
-<th style="padding: 8px; border-bottom: 2px solid #ccc; text-align: left;">Excellent (A)</th>
-<th style="padding: 8px; border-bottom: 2px solid #ccc; text-align: left;">Good (B)</th>
-<th style="padding: 8px; border-bottom: 2px solid #ccc; text-align: left;">Satisfactory (C)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>[Criterion 1]</strong></td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Description]</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Description]</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Description]</td>
-</tr>
-<tr>
-<td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>[Criterion 2]</strong></td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Description]</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Description]</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Description]</td>
-</tr>
-<tr>
-<td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>[Criterion 3]</strong></td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Description]</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Description]</td>
-<td style="padding: 8px; border-bottom: 1px solid #eee;">[Description]</td>
-</tr>
-</tbody>
-</table>
-<h2 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.375rem; font-weight: 600; line-height: 1.3; margin: 1.5rem 0 1rem;"><span style="font-size: 1em; line-height: 1;">📤</span> Submission Guidelines</h2>
-<ul>
-<li><strong>Format:</strong> [File type]</li>
-<li><strong>Naming:</strong> [Convention]</li>
-<li><strong>Platform:</strong> [Where to submit]</li>
-<li><strong>Late Policy:</strong> [Penalty description]</li>
-</ul>
-<blockquote><p>💡 <strong>Success Tip:</strong> Start early and ask questions during office hours!</p></blockquote>
+# 📋 Assignment: [Title]
+
+**📊 Weight:** [XX%] of final grade  
+**📅 Due Date:** [Date and time]  
+**⏰ Estimated Time:** [X hours]
+
+---
+
+## 🎯 Assignment Overview
+[Clear description of what students need to create/analyze/solve]
+
+## 📋 Requirements
+- [ ] [Requirement 1]
+- [ ] [Requirement 2]
+- [ ] [Requirement 3]
+- [ ] [Requirement 4]
+
+## 📦 Deliverables
+1. **[Item 1]:** [Description] ([format], max [size/length])
+2. **[Item 2]:** [Description] ([format], max [size/length])  
+3. **[Item 3]:** [Description] ([format], max [size/length])
+
+---
+
+## 🏆 Grading Criteria
+| Criteria | Excellent (A) | Good (B) | Satisfactory (C) |
+|----------|---------------|----------|------------------|
+| **[Criterion 1]** | [Description] | [Description] | [Description] |
+| **[Criterion 2]** | [Description] | [Description] | [Description] |
+| **[Criterion 3]** | [Description] | [Description] | [Description] |
+
+## 📤 Submission Guidelines
+- **Format:** [File type]
+- **Naming:** [Convention]
+- **Platform:** [Where to submit]
+- **Late Policy:** [Penalty description]
+
+> 💡 **Success Tip:** Start early and ask questions during office hours!
 `
   }
 };
