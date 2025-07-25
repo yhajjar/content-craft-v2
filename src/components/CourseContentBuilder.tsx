@@ -495,6 +495,33 @@ const CourseContentBuilder: React.FC<CourseContentBuilderProps> = ({ rowId }) =>
     setIsDarkMode(!isDarkMode);
   };
 
+  // Helper function to regenerate module IDs based on their position
+  const regenerateModuleIds = (modules: Module[], sectionId: string): Module[] => {
+    return modules.map((module, index) => ({
+      ...module,
+      id: `mod_${sectionId}_${index + 1}`
+    }));
+  };
+
+  // Helper function to regenerate section IDs based on their position
+  const regenerateSectionIds = (sections: Section[]): Section[] => {
+    return sections.map((section, index) => {
+      const newSectionId = `sec_${index + 1}`;
+      const updatedSection = { ...section, id: newSectionId };
+      
+      if (section.type === 'single-module' && section.module) {
+        updatedSection.module = {
+          ...section.module,
+          id: `mod_${newSectionId}_1`
+        };
+      } else if (section.type === 'multi-module' && section.modules) {
+        updatedSection.modules = regenerateModuleIds(section.modules, newSectionId);
+      }
+      
+      return updatedSection;
+    });
+  };
+
   const handleDragEnd = useCallback((result: any) => {
     if (!result.destination || !courseData) return;
 
@@ -510,29 +537,41 @@ const CourseContentBuilder: React.FC<CourseContentBuilderProps> = ({ rowId }) =>
       const [movedModule] = sourceModules.splice(source.index, 1);
 
       if (source.droppableId === destination.droppableId) {
+        // Moving within the same section
         sourceModules.splice(destination.index, 0, movedModule);
+        const reorderedModules = regenerateModuleIds(sourceModules, sourceSection.id);
+        
         const newSections = courseData.sections.map(section =>
-          section.id === source.droppableId ? { ...section, modules: sourceModules } : section
+          section.id === source.droppableId ? { ...section, modules: reorderedModules } : section
         );
         setCourseData(prev => prev ? ({ ...prev, sections: newSections }) : null);
       } else {
+        // Moving between different sections
         const destModules = Array.from(destSection.modules || []);
         destModules.splice(destination.index, 0, movedModule);
+        
+        const reorderedSourceModules = regenerateModuleIds(sourceModules, sourceSection.id);
+        const reorderedDestModules = regenerateModuleIds(destModules, destSection.id);
+        
         const newSections = courseData.sections.map(section => {
-          if (section.id === source.droppableId) return { ...section, modules: sourceModules };
-          if (section.id === destination.droppableId) return { ...section, modules: destModules };
+          if (section.id === source.droppableId) return { ...section, modules: reorderedSourceModules };
+          if (section.id === destination.droppableId) return { ...section, modules: reorderedDestModules };
           return section;
         });
         setCourseData(prev => prev ? ({ ...prev, sections: newSections }) : null);
       }
     } else {
+      // Moving sections
       const items = Array.from(courseData.sections);
       const [reorderedItem] = items.splice(source.index, 1);
       items.splice(destination.index, 0, reorderedItem);
 
+      // Regenerate section IDs based on new order
+      const reorderedSections = regenerateSectionIds(items);
+
       setCourseData(prev => prev ? ({
         ...prev,
-        sections: items
+        sections: reorderedSections
       }) : null);
     }
   }, [courseData]);
@@ -602,7 +641,8 @@ const CourseContentBuilder: React.FC<CourseContentBuilderProps> = ({ rowId }) =>
     const section = courseData.sections.find(sec => sec.id === sectionId);
     if (!section) return;
 
-    const newModuleId = `mod_${sectionId}_${(section.modules?.length || 0) + 1}`;
+    const currentModules = section.modules || [];
+    const newModuleId = `mod_${sectionId}_${currentModules.length + 1}`;
 
     const newModule: Module = {
       id: newModuleId,
@@ -616,7 +656,7 @@ const CourseContentBuilder: React.FC<CourseContentBuilderProps> = ({ rowId }) =>
       ...prev,
       sections: prev.sections.map(section =>
         section.id === sectionId && section.type === 'multi-module'
-          ? { ...section, modules: [...(section.modules || []), newModule] }
+          ? { ...section, modules: [...currentModules, newModule] }
           : section
       )
     }) : null);
@@ -645,11 +685,55 @@ const CourseContentBuilder: React.FC<CourseContentBuilderProps> = ({ rowId }) =>
     }) : null);
   }, [courseData]);
 
+  // Helper function to extract sequence number from ID
+  const extractSequenceNumber = (id: string): number => {
+    const match = id.match(/_(\d+)$/);
+    return match ? parseInt(match[1], 10) : 0;
+  };
+
+  // Helper function to sort sections by sequence number
+  const sortSections = (sections: Section[]): Section[] => {
+    return [...sections].sort((a, b) => {
+      const aSeq = extractSequenceNumber(a.id);
+      const bSeq = extractSequenceNumber(b.id);
+      return aSeq - bSeq;
+    });
+  };
+
+  // Helper function to sort modules within a section by sequence number
+  const sortModules = (modules: Module[]): Module[] => {
+    return [...modules].sort((a, b) => {
+      const aSeq = extractSequenceNumber(a.id);
+      const bSeq = extractSequenceNumber(b.id);
+      return aSeq - bSeq;
+    });
+  };
+
+  // Helper function to create sorted course data for JSON export
+  const createSortedCourseData = (data: CourseData): CourseData => {
+    const sortedSections = sortSections(data.sections).map(section => {
+      if (section.type === 'multi-module' && section.modules) {
+        return {
+          ...section,
+          modules: sortModules(section.modules)
+        };
+      }
+      return section;
+    });
+
+    return {
+      ...data,
+      sections: sortedSections
+    };
+  };
+
   const saveCourse = useCallback(() => {
     if (!courseData) return;
 
     try {
-      const jsonString = JSON.stringify(courseData, null, 2);
+      // Create sorted version of course data for export
+      const sortedCourseData = createSortedCourseData(courseData);
+      const jsonString = JSON.stringify(sortedCourseData, null, 2);
       const blob = new Blob([jsonString], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
